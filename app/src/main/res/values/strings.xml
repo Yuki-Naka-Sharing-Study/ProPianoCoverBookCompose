@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">ProPianoCoverBook</string>
+    <!-- 共通 -->
+    <string name="confirm">confirm</string>
+    <string name="record">record</string>
+    <string name="setting">setting</string>
+
+    <string name="description_of_the_image">Description of the image</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- RecordFragment -->
+    <string name="music_name">曲名</string>
+    <string name="placeholder_music">ラ・カンパネラ</string>
+
+    <string name="artist_name">作曲者名</string>
+    <string name="placeholder_artist">リスト</string>
+
+    <string name="memo_name">メモ</string>
+    <string name="placeholder_memo">アルペジオが上手く弾けない。</string>
+
+    <string name="right_hand">右手の習熟度</string>
+    <string name="left_hand">左手の習熟度</string>
+
+    <string name="record_button">記録する</string>
+
+    <!-- ConfirmFragment -->
+    <string name="no_record">記録無し</string>
+    <string name="no_record_description">まだ何も記録されていません。</string>
+    <string name="search_by_name">曲名・アーティスト名で検索</string>
+    <string name="content_description_search_icon">Search Icon</string>
+
+    <!-- SettingFragment -->
+    <string name="setting_text_view">設定</string>
+    <string name="about_this_app">このアプリについて</string>
+    <string name="contact">お問い合わせ</string>
+    <string name="review">レビューする</string>
+    <string name="share_this_app">このアプリを共有する</string>
+    <string name="version">バージョン</string>
+</resources>

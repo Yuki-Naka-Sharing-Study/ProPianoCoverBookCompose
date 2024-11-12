@@ -1,0 +1,64 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "539feebfe19df70a92cf53d66fa081ce",
+    "entities": [
+      {
+        "tableName": "music_info",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nameOfMusic` TEXT NOT NULL, `nameOfArtist` TEXT NOT NULL, `nameOfMemo` TEXT NOT NULL, `levelOfRightHand` INTEGER NOT NULL, `levelOfLeftHand` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nameOfMusic",
+            "columnName": "nameOfMusic",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nameOfArtist",
+            "columnName": "nameOfArtist",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nameOfMemo",
+            "columnName": "nameOfMemo",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "levelOfRightHand",
+            "columnName": "levelOfRightHand",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "levelOfLeftHand",
+            "columnName": "levelOfLeftHand",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '539feebfe19df70a92cf53d66fa081ce')"
+    ]
+  }
+}
