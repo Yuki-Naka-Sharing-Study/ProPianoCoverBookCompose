@@ -29,6 +29,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
@@ -73,6 +74,7 @@ fun RecordScreen(viewModel: MusicInfoViewModel) {
         InputRow(
             label = stringResource(id = R.string.music_name),
             placeholder = stringResource(id = R.string.placeholder_music),
+            value = textOfMusic,
             onValueChange = { textOfMusic = it }
         )
 
@@ -80,6 +82,7 @@ fun RecordScreen(viewModel: MusicInfoViewModel) {
         InputRow(
             label = stringResource(id = R.string.artist_name),
             placeholder = stringResource(id = R.string.placeholder_artist),
+            value = textOfArtist,
             onValueChange = { textOfArtist = it }
         )
 
@@ -87,8 +90,11 @@ fun RecordScreen(viewModel: MusicInfoViewModel) {
         InputRow(
             label = stringResource(id = R.string.memo_name),
             placeholder = stringResource(id = R.string.placeholder_memo),
+            value = textOfMemo,
             onValueChange = { textOfMemo = it }
         )
+
+        val isButtonEnabled = textOfMusic.isNotBlank() && textOfArtist.isNotBlank() && textOfMemo.isNotBlank()
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8)))
         ProgressSection(stringResource(id = R.string.right_hand)) { RightHandCircularProgressWithSeekBar() }
@@ -110,7 +116,8 @@ fun RecordScreen(viewModel: MusicInfoViewModel) {
                             textOfArtist,
                             textOfMemo
                         )
-                    }
+                    },
+                    enabled = isButtonEnabled
                 )
             }
         }
@@ -129,7 +136,7 @@ private fun RecordScreenPreview(
 }
 
 @Composable
-private fun InputRow(label: String, placeholder: String, onValueChange: (String) -> Unit = {}) {
+private fun InputRow(label: String, placeholder: String, value: String, onValueChange: (String) -> Unit = {}) {
     Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
@@ -141,7 +148,7 @@ private fun InputRow(label: String, placeholder: String, onValueChange: (String)
             modifier = Modifier
                 .weight(1f)
                 .height(dimensionResource(id = R.dimen.text_field_height)),
-            value = "",
+            value = value,
             onValueChange = onValueChange,
             placeholder = {
                 Text(
@@ -212,11 +219,13 @@ private fun LeftHandCircularProgressWithSeekBar() {
 
 @Composable
 private fun SaveRecordButton(
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
+    enabled: Boolean = true
 ) {
     Button(
         onClick = onClick,
-        colors = ButtonDefaults.buttonColors(Color.Blue)
+        colors = ButtonDefaults.buttonColors(Color.Blue),
+        enabled = enabled
     ) {
         Text(stringResource(id = R.string.record_button))
     }
