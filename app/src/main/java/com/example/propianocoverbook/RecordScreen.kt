@@ -57,6 +57,8 @@ fun RecordScreen() {
     ) {
         var textOfMusic by rememberSaveable { mutableStateOf("") }
         var textOfArtist by rememberSaveable { mutableStateOf("") }
+        var textOfGenre by rememberSaveable { mutableStateOf("") }
+        var textOfStyle by rememberSaveable { mutableStateOf("") }
         var textOfMemo by rememberSaveable { mutableStateOf("") }
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_16_dp)))
