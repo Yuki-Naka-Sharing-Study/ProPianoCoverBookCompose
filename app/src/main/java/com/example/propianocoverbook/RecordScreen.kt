@@ -293,7 +293,7 @@ private fun CircularProgressWithSeekBar(progress: MutableState<Float>) {
     Box(contentAlignment = Alignment.Center,
         modifier = Modifier.size(dimensionResource(id = R.dimen.circular_progress_with_seek_bar_size))) {
         CircularProgressIndicator(
-            color = Color.Blue,
+            color = Color(0xff8a2be2),
             strokeWidth = dimensionResource(id = R.dimen.circular_progress_indicator_stroke_width),
             progress = progress.value / 100,
             modifier = Modifier
@@ -307,14 +307,14 @@ private fun CircularProgressWithSeekBar(progress: MutableState<Float>) {
     }
     Slider(
         colors = SliderDefaults.colors(
-            activeTrackColor = Color.Blue,
+            activeTrackColor = Color(0xff8a2be2),
             inactiveTrackColor = Color.Gray,
-            thumbColor = Color.Blue
+            thumbColor = Color.Gray
         ),
         value = progress.value,
         onValueChange = { newValue -> progress.value = newValue },
         valueRange = 0f..100f,
-        thumb = { Canvas(Modifier.size(8.dp)) { drawCircle(Color.Blue) } }
+        thumb = { Canvas(Modifier.size(8.dp)) { drawCircle(Color(0xff8a2be2)) } }
     )
 }
 
