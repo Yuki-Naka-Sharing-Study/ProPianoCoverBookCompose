@@ -126,7 +126,6 @@ private fun InputRow(label: String, placeholder: String, value: String, onValueC
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
         Text(text = label)
         Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
         androidx.compose.material.OutlinedTextField(
@@ -148,7 +147,6 @@ private fun InputRow(label: String, placeholder: String, value: String, onValueC
                 unfocusedBorderColor = Color.Gray
             )
         )
-        Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
     }
 }
 
