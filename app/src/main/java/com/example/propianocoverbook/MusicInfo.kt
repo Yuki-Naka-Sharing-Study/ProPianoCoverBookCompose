@@ -8,6 +8,8 @@ data class MusicInfo(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val nameOfMusic: String,
     val nameOfArtist: String,
+    val nameOfJenre: String,
+    val nameOfStyle: String,
     val nameOfMemo: String,
     val levelOfRightHand: Int,
     val levelOfLeftHand: Int,
