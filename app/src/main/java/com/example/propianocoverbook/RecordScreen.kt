@@ -1,5 +1,7 @@
 package com.example.propianocoverbook
 
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -7,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -21,10 +24,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
@@ -32,6 +37,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.propianocoverbook.ui.theme.ProPianoCoverBookTheme
@@ -159,6 +165,7 @@ private fun ProgressSection(label: String, progressContent: @Composable () -> Un
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CircularProgressWithSeekBar(progress: MutableState<Float>) {
     Box(contentAlignment = Alignment.Center,
@@ -176,6 +183,7 @@ private fun CircularProgressWithSeekBar(progress: MutableState<Float>) {
             style = TextStyle(fontSize = dimensionResource(id = R.dimen.text_size_large).value.sp),
         )
     }
+    val interactionSource = remember { MutableInteractionSource() }
     Slider(
         colors = SliderDefaults.colors(
             activeTrackColor = Color.Blue,
@@ -185,7 +193,7 @@ private fun CircularProgressWithSeekBar(progress: MutableState<Float>) {
         value = progress.value,
         onValueChange = { newValue -> progress.value = newValue },
         valueRange = 0f..100f,
-        modifier = Modifier.padding(dimensionResource(id = R.dimen.space_16_dp))
+        thumb = { Canvas(Modifier.size(8.dp)) { drawCircle(Color.Blue) } }
     )
 }
 
