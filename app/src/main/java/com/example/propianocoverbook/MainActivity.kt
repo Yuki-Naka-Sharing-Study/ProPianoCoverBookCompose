@@ -17,6 +17,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
@@ -58,10 +59,10 @@ private fun MyApp(viewModel: MusicInfoViewModel) {
             Modifier.padding(innerPadding)
         ) {
             // 以下、BottomNavigation
-            composable("confirm") { ConfirmScreen() }
+            composable("記録確認") { ConfirmScreen() }
 //            composable("record") { RecordScreen(viewModel = viewModel) }
-            composable("record") { RecordScreen() }
-            composable("setting") { SettingScreen() }
+            composable("記録する") { RecordScreen() }
+            composable("設定") { SettingScreen() }
 
             // 以下、設定画面からの画面遷移
 //            composable("about") { AboutThisAppScreen() }
@@ -75,42 +76,51 @@ private fun BottomNavigationBar(navController: NavController) {
     val navBackStackEntry = navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry.value?.destination
 
-    BottomNavigation {
+    BottomNavigation(
+        backgroundColor = Color(0xff7b68ee),
+        contentColor = Color(0xffffffff)
+    ) {
         BottomNavigationItem(
             icon = { Icon(Icons.Default.Check, contentDescription = stringResource(id = R.string.confirm)) },
             label = { Text(stringResource(id = R.string.confirm)) },
             selected = currentDestination?.route == stringResource(id = R.string.confirm),
             onClick = {
-                navController.navigate("confirm") {
+                navController.navigate("記録確認") {
 //                    popUpTo("confirm") { saveState = true }
                     launchSingleTop = true
                     restoreState = true
                 }
-            }
+            },
+            selectedContentColor = Color(0xffffffff),
+            unselectedContentColor = Color(0xff0000ff)
         )
         BottomNavigationItem(
             icon = { Icon(Icons.Default.Edit, contentDescription = stringResource(id = R.string.record)) },
             label = { Text(stringResource(id = R.string.record)) },
             selected = currentDestination?.route == stringResource(id = R.string.record),
             onClick = {
-                navController.navigate("record") {
+                navController.navigate("記録する") {
 //                    popUpTo("record") { saveState = true }
                     launchSingleTop = true
                     restoreState = true
                 }
-            }
+            },
+            selectedContentColor = Color(0xffffffff),
+            unselectedContentColor = Color(0xff0000ff)
         )
         BottomNavigationItem(
             icon = { Icon(Icons.Default.Settings, contentDescription = stringResource(id = R.string.setting)) },
             label = { Text(stringResource(id = R.string.setting)) },
             selected = currentDestination?.route == stringResource(id = R.string.setting),
             onClick = {
-                navController.navigate("setting") {
+                navController.navigate("設定") {
 //                    popUpTo("setting") { saveState = true }
                     launchSingleTop = true
                     restoreState = true
                 }
-            }
+            },
+            selectedContentColor = Color(0xffffffff),
+            unselectedContentColor = Color(0xff0000ff)
         )
     }
 }
