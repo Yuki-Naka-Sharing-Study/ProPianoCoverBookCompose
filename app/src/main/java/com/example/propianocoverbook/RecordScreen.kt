@@ -1,6 +1,5 @@
 package com.example.propianocoverbook
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,8 +32,6 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.sp
 import com.example.propianocoverbook.ui.theme.ProPianoCoverBookTheme
 
@@ -42,13 +39,13 @@ import com.example.propianocoverbook.ui.theme.ProPianoCoverBookTheme
 //fun RecordScreen(viewModel: MusicInfoViewModel) {
 fun RecordScreen() {
     Column(
-        modifier = Modifier.padding(dimensionResource(id = R.dimen.space_16))
+        modifier = Modifier.padding(dimensionResource(id = R.dimen.space_16_dp))
     ) {
         var textOfMusic by rememberSaveable { mutableStateOf("") }
         var textOfArtist by rememberSaveable { mutableStateOf("") }
         var textOfMemo by rememberSaveable { mutableStateOf("") }
 
-        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_16)))
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_16_dp)))
         InputRow(
             label = stringResource(id = R.string.music_name),
             placeholder = stringResource(id = R.string.placeholder_music),
@@ -56,7 +53,7 @@ fun RecordScreen() {
             onValueChange = { textOfMusic = it }
         )
 
-        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8)))
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
         InputRow(
             label = stringResource(id = R.string.artist_name),
             placeholder = stringResource(id = R.string.placeholder_artist),
@@ -64,7 +61,7 @@ fun RecordScreen() {
             onValueChange = { textOfArtist = it }
         )
 
-        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8)))
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
         InputRow(
             label = stringResource(id = R.string.memo_name),
             placeholder = stringResource(id = R.string.placeholder_memo),
@@ -74,7 +71,7 @@ fun RecordScreen() {
 
         val isButtonEnabled = textOfMusic.isNotBlank() && textOfArtist.isNotBlank() && textOfMemo.isNotBlank()
 
-        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8)))
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
         ProgressSection(stringResource(id = R.string.right_hand)) { RightHandCircularProgressWithSeekBar() }
         ProgressSection(stringResource(id = R.string.left_hand)) { LeftHandCircularProgressWithSeekBar() }
 
@@ -129,9 +126,9 @@ private fun InputRow(label: String, placeholder: String, value: String, onValueC
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16)))
+        Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
         Text(text = label)
-        Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16)))
+        Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
         androidx.compose.material.OutlinedTextField(
             modifier = Modifier
                 .weight(1f)
@@ -151,7 +148,7 @@ private fun InputRow(label: String, placeholder: String, value: String, onValueC
                 unfocusedBorderColor = Color.Gray
             )
         )
-        Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16)))
+        Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
     }
 }
 
@@ -173,7 +170,7 @@ private fun CircularProgressWithSeekBar(progress: MutableState<Float>) {
             progress = progress.value / 100,
             modifier = Modifier
                 .size(dimensionResource(id = R.dimen.circular_progress_with_seek_bar_size))
-                .padding(dimensionResource(id = R.dimen.space_8))
+                .padding(dimensionResource(id = R.dimen.space_8_dp))
         )
         Text(
             text = "${progress.value.toInt()}%",
@@ -189,7 +186,7 @@ private fun CircularProgressWithSeekBar(progress: MutableState<Float>) {
         value = progress.value,
         onValueChange = { newValue -> progress.value = newValue },
         valueRange = 0f..100f,
-        modifier = Modifier.padding(dimensionResource(id = R.dimen.space_16))
+        modifier = Modifier.padding(dimensionResource(id = R.dimen.space_16_dp))
     )
 }
 

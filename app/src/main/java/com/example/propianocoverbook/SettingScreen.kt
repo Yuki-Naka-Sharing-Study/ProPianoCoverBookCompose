@@ -28,14 +28,14 @@ import com.example.propianocoverbook.ui.theme.ProPianoCoverBookTheme
 fun SettingScreen() {
     Column(
         modifier = Modifier
-            .padding(dimensionResource(id = R.dimen.space_16)),
+            .padding(dimensionResource(id = R.dimen.space_16_dp)),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
         Spacer(
             modifier = Modifier.height(
-                dimensionResource(id = R.dimen.space_16)
+                dimensionResource(id = R.dimen.space_16_dp)
             )
         )
 
@@ -43,15 +43,15 @@ fun SettingScreen() {
 
         Spacer(
             modifier = Modifier.height(
-                dimensionResource(id = R.dimen.space_16)
+                dimensionResource(id = R.dimen.space_16_dp)
             )
         )
 
         AboutThisAppLazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = dimensionResource(id = R.dimen.space_16))
-                .clip(RoundedCornerShape(dimensionResource(id = R.dimen.space_16)))
+                .padding(horizontal = dimensionResource(id = R.dimen.space_16_dp))
+                .clip(RoundedCornerShape(dimensionResource(id = R.dimen.space_16_dp)))
                 .background(color = androidx.compose.ui.graphics.Color.LightGray)
         )
     }
@@ -94,8 +94,8 @@ private fun AboutThisAppLazyColumn(modifier: Modifier) {
     LazyColumn(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = dimensionResource(id = R.dimen.space_16))
-            .clip(RoundedCornerShape(dimensionResource(id = R.dimen.space_16)))
+            .padding(horizontal = dimensionResource(id = R.dimen.space_16_dp))
+            .clip(RoundedCornerShape(dimensionResource(id = R.dimen.space_16_dp)))
             .background(color = androidx.compose.ui.graphics.Color.LightGray)
     ) {
         items(itemList.size) { index ->
@@ -109,9 +109,9 @@ private fun AboutThisAppLazyColumn(modifier: Modifier) {
             }
             BasicText(
                 text = item,
-                modifier = Modifier.padding(dimensionResource(id = R.dimen.space_16)),
+                modifier = Modifier.padding(dimensionResource(id = R.dimen.space_16_dp)),
                 style = TextStyle(
-                    fontSize = dimensionResource(id = R.dimen.space_16).value.sp,
+                    fontSize = dimensionResource(id = R.dimen.space_16_dp).value.sp,
                     color = androidx.compose.ui.graphics.Color.Gray
                 )
             )

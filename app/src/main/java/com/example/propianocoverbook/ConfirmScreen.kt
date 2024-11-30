@@ -151,7 +151,7 @@ private fun SearchBar(
                 )
             )
         )
-        .padding(dimensionResource(id = R.dimen.space_8))
+        .padding(dimensionResource(id = R.dimen.space_8_dp))
 
     Box(modifier = modifier) {
         androidx.compose.material.TextField(
@@ -178,7 +178,7 @@ private fun SearchBar(
 private fun SearchScreen() {
     var searchQuery by rememberSaveable { mutableStateOf("") }
 
-    Column(modifier = Modifier.padding(dimensionResource(id = R.dimen.space_16))) {
+    Column(modifier = Modifier.padding(dimensionResource(id = R.dimen.space_16_dp))) {
         SearchBar(
             query = searchQuery,
             onQueryChange = { searchQuery = it }
@@ -192,72 +192,72 @@ private fun MusicInfoLazyColumn() {
     LazyColumn(modifier = Modifier.fillMaxWidth()) {
         items(4) { index ->
 
-            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8)))
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
 
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_24)))
+                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_24_dp)))
                 SongNameTextView(songName = "")
-                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16)))
+                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
                 SongNameUserEnteredTextView(songName = "")
             }
 
-            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8)))
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
 
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_24)))
+                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_24_dp)))
                 ArtistNameTextView(artistName = "")
-                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16)))
+                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
                 ArtistNameUserEnteredTextView(artistName = "")
             }
 
-            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8)))
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
 
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_24)))
+                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_24_dp)))
                 MemoTextView(memoName = "")
-                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16)))
+                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
                 MemoUserEnteredTextView(memoName = "")
             }
 
-            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8)))
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
 
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_24)))
+                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_24_dp)))
                 RightHandTextView(rightHand = "")
-                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16)))
+                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
                 RightHandUserEnteredTextView(rightHand = "")
             }
 
-            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8)))
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
 
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_24)))
+                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_24_dp)))
                 LeftHandTextView(leftHand = "")
-                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16)))
+                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
                 LeftHandUserEnteredTextView(leftHand = "")
             }
 
-            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8)))
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
 
             Divider(
                 modifier = Modifier
