@@ -81,13 +81,21 @@ fun RecordScreen() {
         Row {
             Text(text = "ジャンル")
             Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
-            DropdownMenuWithIcon(items = listOf("Classic", "Country", "Rock", "Pop", "R&B", "Rap", "House", "Jazz"))
+            DropdownMenuWithIcon(
+                items = listOf("Classic", "Country", "Rock", "Pop", "R&B", "Rap", "House", "Jazz"),
+                value = textOfGenre,
+                onValueChange = { textOfGenre = it }
+            )
 
             Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_24_dp)))
 
             Text(text = "演奏スタイル")
             Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
-            DropdownMenuWithIcon(items = listOf("独奏", "伴奏", "弾き語り"))
+            DropdownMenuWithIcon(
+                items = listOf("独奏", "伴奏", "弾き語り"),
+                value = textOfStyle,
+                onValueChange ={ textOfStyle = it }
+            )
         }
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
@@ -180,7 +188,7 @@ private fun RowOutlinedTextField(label: String, placeholder: String, value: Stri
 }
 
 @Composable
-private fun DropdownMenuWithIcon(items: List<String>) {
+private fun DropdownMenuWithIcon(items: List<String>, value: String, onValueChange: (String) -> Unit = {}) {
     var expanded by remember { mutableStateOf(false) }
     var selectedIndex by remember { mutableStateOf(0) }
 
