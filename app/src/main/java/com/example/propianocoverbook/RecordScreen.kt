@@ -32,6 +32,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.propianocoverbook.ui.theme.ProPianoCoverBookTheme
 
@@ -84,7 +85,7 @@ fun RecordScreen() {
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                SaveRecordButton(
+                SaveButton(
 //                    onClick = {
 //                        viewModel.saveValues(
 //                            textOfMusic,
@@ -201,13 +202,14 @@ private fun LeftHandCircularProgressWithSeekBar() {
 }
 
 @Composable
-private fun SaveRecordButton(
+private fun SaveButton(
     onClick: () -> Unit = {},
     enabled: Boolean = true
 ) {
     Button(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(Color.Blue),
+        shape = RoundedCornerShape(8.dp),
         enabled = enabled
     ) {
         Text(stringResource(id = R.string.record_button))
