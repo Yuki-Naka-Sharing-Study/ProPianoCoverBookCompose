@@ -82,7 +82,7 @@ fun RecordScreen() {
             Text(text = "ジャンル")
             Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
             DropdownMenuWithIcon(
-                items = listOf("Classic", "Country", "Rock", "Pop", "R&B", "Rap", "House", "Jazz"),
+                items = listOf("Classic", "Jazz", "Pop", "Rock", "Others"),
                 value = textOfGenre,
                 onValueChange = { textOfGenre = it }
             )
