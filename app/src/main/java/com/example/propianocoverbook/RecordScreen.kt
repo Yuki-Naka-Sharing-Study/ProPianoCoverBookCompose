@@ -178,7 +178,7 @@ private fun RowOutlinedTextField(label: String, placeholder: String, value: Stri
 }
 
 @Composable
-fun GenreDropdownMenuWithIcon() {
+private fun GenreDropdownMenuWithIcon() {
     val items = listOf("Classic", "Country", "Rock", "Pop", "R&B", "Rap", "House", "Jazz")
     var expanded by remember { mutableStateOf(false) }
     var selectedIndex by remember { mutableStateOf(0) }
@@ -229,7 +229,7 @@ fun GenreDropdownMenuWithIcon() {
 }
 
 @Composable
-fun StyleDropdownMenuWithIcon() {
+private fun StyleDropdownMenuWithIcon() {
     val items = listOf("独奏", "伴奏", "弾き語り")
     var expanded by remember { mutableStateOf(false) }
     var selectedIndex by remember { mutableStateOf(0) }
