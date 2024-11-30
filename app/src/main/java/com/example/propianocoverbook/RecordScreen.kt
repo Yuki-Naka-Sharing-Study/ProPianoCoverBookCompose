@@ -79,13 +79,13 @@ fun RecordScreen() {
         Row {
             Text(text = "ジャンル")
             Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
-            GenreDropdownMenuWithIcon()
+            DropdownMenuWithIcon(items = listOf("Classic", "Country", "Rock", "Pop", "R&B", "Rap", "House", "Jazz"))
 
             Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_24_dp)))
 
             Text(text = "演奏スタイル")
             Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
-            StyleDropdownMenuWithIcon()
+            DropdownMenuWithIcon(items = listOf("独奏", "伴奏", "弾き語り"))
         }
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
@@ -178,8 +178,7 @@ private fun RowOutlinedTextField(label: String, placeholder: String, value: Stri
 }
 
 @Composable
-private fun GenreDropdownMenuWithIcon() {
-    val items = listOf("Classic", "Country", "Rock", "Pop", "R&B", "Rap", "House", "Jazz")
+private fun DropdownMenuWithIcon(items: List<String>) {
     var expanded by remember { mutableStateOf(false) }
     var selectedIndex by remember { mutableStateOf(0) }
 
@@ -187,13 +186,11 @@ private fun GenreDropdownMenuWithIcon() {
         contentAlignment = Alignment.Center
     ) {
         Box(
-            modifier = Modifier
-                .wrapContentSize(Alignment.Center)
+            modifier = Modifier.wrapContentSize(Alignment.Center)
         ) {
             Row(
                 horizontalArrangement = Arrangement.Start,
-                modifier = Modifier
-                    .clickable { expanded = !expanded }
+                modifier = Modifier.clickable { expanded = !expanded }
             ) {
                 Text(
                     text = items[selectedIndex],
@@ -209,57 +206,7 @@ private fun GenreDropdownMenuWithIcon() {
                     modifier = Modifier.size(24.dp)
                 )
             }
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
-                offset = DpOffset(0.dp, 8.dp)
-            ) {
-                items.forEachIndexed { index, item ->
-                    DropdownMenuItem(
-                        text = { Text(text = item) },
-                        onClick = {
-                            selectedIndex = index
-                            expanded = false
-                        }
-                    )
-                }
-            }
-        }
-    }
-}
 
-@Composable
-private fun StyleDropdownMenuWithIcon() {
-    val items = listOf("独奏", "伴奏", "弾き語り")
-    var expanded by remember { mutableStateOf(false) }
-    var selectedIndex by remember { mutableStateOf(0) }
-
-    Box(
-        contentAlignment = Alignment.Center
-    ) {
-        Box(
-            modifier = Modifier
-                .wrapContentSize(Alignment.Center)
-        ) {
-            Row(
-                horizontalArrangement = Arrangement.Start,
-                modifier = Modifier
-                    .clickable { expanded = !expanded }
-            ) {
-                Text(
-                    text = items[selectedIndex],
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Normal,
-                    color = Color.Black
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Icon(
-                    imageVector = if (expanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
-                    contentDescription = "Dropdown Icon",
-                    tint = Color.Black,
-                    modifier = Modifier.size(24.dp)
-                )
-            }
             DropdownMenu(
                 expanded = expanded,
                 onDismissRequest = { expanded = false },
