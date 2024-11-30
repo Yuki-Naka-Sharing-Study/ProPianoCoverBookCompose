@@ -1,4 +1,4 @@
-package com.example.propianocoverbook
+package com.example.propianocoverbook.data
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

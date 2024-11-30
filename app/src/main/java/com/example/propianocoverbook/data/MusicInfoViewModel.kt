@@ -1,7 +1,10 @@
-package com.example.propianocoverbook
+package com.example.propianocoverbook.data
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.propianocoverbook.data.MusicInfo
+import com.example.propianocoverbook.data.MusicInfoDao
+import com.example.propianocoverbook.data.MusicInfoRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

@@ -1,4 +1,4 @@
-package com.example.propianocoverbook
+package com.example.propianocoverbook.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

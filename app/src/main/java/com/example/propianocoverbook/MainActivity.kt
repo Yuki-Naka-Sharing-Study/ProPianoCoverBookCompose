@@ -25,6 +25,14 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
 import androidx.room.Room
+import com.example.propianocoverbook.data.MusicInfoDao
+import com.example.propianocoverbook.data.MusicInfoDatabase
+import com.example.propianocoverbook.data.MusicInfoRepository
+import com.example.propianocoverbook.data.MusicInfoViewModel
+import com.example.propianocoverbook.data.MusicInfoViewModelFactory
+import com.example.propianocoverbook.screen.ConfirmScreen
+import com.example.propianocoverbook.screen.RecordScreen
+import com.example.propianocoverbook.screen.SettingScreen
 
 class MainActivity : ComponentActivity() {
     private val repository: MusicInfoRepository = MusicInfoRepository()

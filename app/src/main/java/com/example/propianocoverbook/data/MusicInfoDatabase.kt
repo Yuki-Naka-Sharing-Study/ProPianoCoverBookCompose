@@ -1,4 +1,4 @@
-package com.example.propianocoverbook
+package com.example.propianocoverbook.data
 
 import android.content.Context
 import androidx.room.Database
@@ -12,7 +12,7 @@ abstract class MusicInfoDatabase : RoomDatabase() {
     companion object {
         // Singleton prevents multiple instances of database opening at the same time.
         @Volatile
-        private var INSTANCE: MusicInfoDatabase ? = null
+        private var INSTANCE: MusicInfoDatabase? = null
 
         fun getMusicInfoDatabase(context: Context): MusicInfoDatabase {
             // if the INSTANCE is not null, then return it,

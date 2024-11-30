@@ -1,9 +1,10 @@
-package com.example.propianocoverbook
+package com.example.propianocoverbook.data
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import com.example.propianocoverbook.data.MusicInfo
 
 @Dao
 interface MusicInfoDao {

@@ -1,4 +1,4 @@
-package com.example.propianocoverbook
+package com.example.propianocoverbook.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,12 +16,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import com.example.propianocoverbook.R
 import com.example.propianocoverbook.ui.theme.ProPianoCoverBookTheme
 
 @Composable
@@ -52,7 +54,7 @@ fun SettingScreen() {
                 .fillMaxWidth()
                 .padding(horizontal = dimensionResource(id = R.dimen.space_16_dp))
                 .clip(RoundedCornerShape(dimensionResource(id = R.dimen.space_16_dp)))
-                .background(color = androidx.compose.ui.graphics.Color.LightGray)
+                .background(color = Color.LightGray)
         )
     }
 }
