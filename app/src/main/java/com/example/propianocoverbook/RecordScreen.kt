@@ -183,7 +183,6 @@ private fun CircularProgressWithSeekBar(progress: MutableState<Float>) {
             style = TextStyle(fontSize = dimensionResource(id = R.dimen.text_size_large).value.sp),
         )
     }
-    val interactionSource = remember { MutableInteractionSource() }
     Slider(
         colors = SliderDefaults.colors(
             activeTrackColor = Color.Blue,
