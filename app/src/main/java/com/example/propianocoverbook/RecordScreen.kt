@@ -282,7 +282,7 @@ private fun StyleDropdownMenuWithIcon() {
 @Composable
 private fun ProgressSection(label: String, progressContent: @Composable () -> Unit) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text = label)
+        Text(text = label, fontSize = 20.sp)
         progressContent()
     }
 }
