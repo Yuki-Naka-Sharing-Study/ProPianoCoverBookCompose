@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
@@ -33,6 +34,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // ライトモードを強制的に設定
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         musicInfoDao = Room.databaseBuilder(
             application,
             MusicInfoDatabase::class.java, "music_info_database"
@@ -56,7 +59,8 @@ private fun MyApp(viewModel: MusicInfoViewModel) {
         ) {
             // 以下、BottomNavigation
             composable("confirm") { ConfirmScreen() }
-            composable("record") { RecordScreen(viewModel = viewModel) }
+//            composable("record") { RecordScreen(viewModel = viewModel) }
+            composable("record") { RecordScreen() }
             composable("setting") { SettingScreen() }
 
             // 以下、設定画面からの画面遷移
