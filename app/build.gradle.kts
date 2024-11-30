@@ -55,6 +55,7 @@ android {
 }
 
 dependencies {
+    implementation("androidx.compose.material:material-icons-extended:1.1.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.room.runtime)

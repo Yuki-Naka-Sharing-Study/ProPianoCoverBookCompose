@@ -1,6 +1,7 @@
 package com.example.propianocoverbook
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -22,18 +24,27 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.ArrowDropUp
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.propianocoverbook.ui.theme.ProPianoCoverBookTheme
@@ -63,6 +74,13 @@ fun RecordScreen() {
             value = textOfArtist,
             onValueChange = { textOfArtist = it }
         )
+
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
+        Row {
+            Text(text = "ジャンル")
+            Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
+            GenreDropdownMenuWithIcon()
+        }
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
         RowOutlinedTextField(
@@ -150,6 +168,57 @@ private fun RowOutlinedTextField(label: String, placeholder: String, value: Stri
                 unfocusedBorderColor = Color.Gray
             )
         )
+    }
+}
+
+@Composable
+fun GenreDropdownMenuWithIcon() {
+    val items = listOf("Classic", "Country", "Rock", "Pop", "R&B", "Rap", "House", "Jazz")
+    var expanded by remember { mutableStateOf(false) }
+    var selectedIndex by remember { mutableStateOf(0) }
+
+    Box(
+        contentAlignment = Alignment.Center
+    ) {
+        Box(
+            modifier = Modifier
+                .wrapContentSize(Alignment.Center)
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.Start,
+                modifier = Modifier
+                    .clickable { expanded = !expanded }
+            ) {
+                Text(
+                    text = items[selectedIndex],
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = Color.Black
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Icon(
+                    imageVector = if (expanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
+                    contentDescription = "Dropdown Icon",
+                    tint = Color.Black,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false },
+                offset = DpOffset(0.dp, 8.dp)
+            ) {
+                items.forEachIndexed { index, item ->
+                    DropdownMenuItem(
+                        text = { Text(text = item) },
+                        onClick = {
+                            selectedIndex = index
+                            expanded = false
+                        }
+                    )
+                }
+            }
+        }
     }
 }
 
