@@ -38,7 +38,8 @@ import androidx.compose.ui.unit.sp
 import com.example.propianocoverbook.ui.theme.ProPianoCoverBookTheme
 
 @Composable
-fun RecordScreen(viewModel: MusicInfoViewModel) {
+//fun RecordScreen(viewModel: MusicInfoViewModel) {
+fun RecordScreen() {
     Column(
         modifier = Modifier.padding(dimensionResource(id = R.dimen.space_16))
     ) {
@@ -86,28 +87,38 @@ fun RecordScreen(viewModel: MusicInfoViewModel) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 SaveRecordButton(
-                    onClick = {
-                        viewModel.saveValues(
-                            textOfMusic,
-                            textOfArtist,
-                            textOfMemo
-                        )
-                    },
-                    enabled = isButtonEnabled
+//                    onClick = {
+//                        viewModel.saveValues(
+//                            textOfMusic,
+//                            textOfArtist,
+//                            textOfMemo
+//                        )
+//                    },
+//                    enabled = isButtonEnabled
                 )
             }
         }
     }
 }
 
+//@Preview
+//@Composable
+//private fun RecordScreenPreview(
+//    @PreviewParameter(PreviewParameterProvider::class)
+//    viewModel: MusicInfoViewModel
+//) {
+//    ProPianoCoverBookTheme {
+//        RecordScreen(viewModel = viewModel)
+//    }
+//}
+
 @Preview
 @Composable
 private fun RecordScreenPreview(
-    @PreviewParameter(PreviewParameterProvider::class)
-    viewModel: MusicInfoViewModel
+
 ) {
     ProPianoCoverBookTheme {
-        RecordScreen(viewModel = viewModel)
+        RecordScreen()
     }
 }
 
