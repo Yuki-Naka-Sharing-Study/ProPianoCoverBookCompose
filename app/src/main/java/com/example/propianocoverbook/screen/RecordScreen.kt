@@ -14,43 +14,39 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Slider
-import androidx.compose.material3.SliderDefaults
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.runtime.MutableState
+import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.propianocoverbook.R
 import com.example.propianocoverbook.data.MusicInfoViewModel
-import com.example.propianocoverbook.ui.theme.ProPianoCoverBookTheme
 
 @Composable
 fun RecordScreen(viewModel: MusicInfoViewModel) {
@@ -63,8 +59,8 @@ fun RecordScreen(viewModel: MusicInfoViewModel) {
         var textOfGenre by rememberSaveable { mutableStateOf("") }
         var textOfStyle by rememberSaveable { mutableStateOf("") }
         var textOfMemo by rememberSaveable { mutableStateOf("") }
-        var numOfRightHand by rememberSaveable { mutableIntStateOf(0) }
-        var numOfLeftHand by rememberSaveable { mutableIntStateOf(0) }
+        var numOfRightHand by rememberSaveable { mutableFloatStateOf(0F) }
+        var numOfLeftHand by rememberSaveable { mutableFloatStateOf(0F) }
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_16_dp)))
         MusicOutlinedTextField(
@@ -99,7 +95,7 @@ fun RecordScreen(viewModel: MusicInfoViewModel) {
             DropdownMenuWithIcon(
                 items = listOf("独奏", "伴奏", "弾き語り"),
                 value = textOfStyle,
-                onValueChange ={ textOfStyle = it }
+                onValueChange = { textOfStyle = it }
             )
         }
 
@@ -112,14 +108,28 @@ fun RecordScreen(viewModel: MusicInfoViewModel) {
         )
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
-        ProgressSection(stringResource(id = R.string.right_hand)) { RightHandCircularProgressWithSeekBar() }
-        ProgressSection(stringResource(id = R.string.left_hand)) { LeftHandCircularProgressWithSeekBar() }
+        ProgressSection(stringResource(id = R.string.right_hand))
+        {
+            CircularProgressWithSeekBar(
+                value = numOfRightHand,
+                onValueChange = { numOfRightHand = it }
+            )
+        }
+        ProgressSection(stringResource(id = R.string.left_hand))
+        {
+            CircularProgressWithSeekBar(
+                value = numOfLeftHand,
+                onValueChange = { numOfLeftHand = it }
+            )
+        }
 
         val isButtonEnabled = textOfMusic.isNotBlank()
                 && textOfArtist.isNotBlank()
                 && textOfGenre.isNotBlank()
                 && textOfStyle.isNotBlank()
                 && textOfMemo.isNotBlank()
+                && numOfRightHand > 1
+                && numOfLeftHand > 1
 
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -137,7 +147,9 @@ fun RecordScreen(viewModel: MusicInfoViewModel) {
                             textOfArtist,
                             textOfGenre,
                             textOfStyle,
-                            textOfMemo
+                            textOfMemo,
+                            numOfRightHand,
+                            numOfLeftHand
                         )
                     },
                     enabled = isButtonEnabled
@@ -169,7 +181,12 @@ fun RecordScreen(viewModel: MusicInfoViewModel) {
 //}
 
 @Composable
-private fun MusicOutlinedTextField(label: String, placeholder: String, value: String, onValueChange: (String) -> Unit = {}) {
+private fun MusicOutlinedTextField(
+    label: String,
+    placeholder: String,
+    value: String,
+    onValueChange: (String) -> Unit = {}
+) {
     Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
@@ -260,19 +277,24 @@ private fun ProgressSection(label: String, progressContent: @Composable () -> Un
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun CircularProgressWithSeekBar(progress: MutableState<Float>) {
-    Box(contentAlignment = Alignment.Center,
-        modifier = Modifier.size(dimensionResource(id = R.dimen.circular_progress_with_seek_bar_size))) {
+private fun CircularProgressWithSeekBar(
+    value: Float,
+    onValueChange: (Float) -> Unit
+) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier.size(dimensionResource(id = R.dimen.circular_progress_with_seek_bar_size))
+    ) {
         CircularProgressIndicator(
             color = Color(0xff8a2be2),
             strokeWidth = dimensionResource(id = R.dimen.circular_progress_indicator_stroke_width),
-            progress = progress.value / 100,
+            progress = value / 100,
             modifier = Modifier
                 .size(dimensionResource(id = R.dimen.circular_progress_with_seek_bar_size))
                 .padding(dimensionResource(id = R.dimen.space_8_dp))
         )
         Text(
-            text = "${progress.value.toInt()}%",
+            text = "${value.toInt()}%",
             style = TextStyle(fontSize = dimensionResource(id = R.dimen.text_size_large).value.sp),
         )
     }
@@ -282,23 +304,15 @@ private fun CircularProgressWithSeekBar(progress: MutableState<Float>) {
             inactiveTrackColor = Color.Gray,
             thumbColor = Color.Gray
         ),
-        value = progress.value,
-        onValueChange = { newValue -> progress.value = newValue },
+        value = value,
+        onValueChange = onValueChange,
         valueRange = 0f..100f,
-        thumb = { Canvas(Modifier.size(8.dp)) { drawCircle(Color(0xff8a2be2)) } }
+        thumb = {
+            Canvas(Modifier.size(8.dp)) {
+                drawCircle(Color(0xff8a2be2))
+            }
+        }
     )
-}
-
-@Composable
-private fun RightHandCircularProgressWithSeekBar() {
-    val rightHandProgress = rememberSaveable { mutableFloatStateOf(0f) }
-    CircularProgressWithSeekBar(progress = rightHandProgress)
-}
-
-@Composable
-private fun LeftHandCircularProgressWithSeekBar() {
-    val leftHandProgress = rememberSaveable { mutableFloatStateOf(0f) }
-    CircularProgressWithSeekBar(progress = leftHandProgress)
 }
 
 @Composable
