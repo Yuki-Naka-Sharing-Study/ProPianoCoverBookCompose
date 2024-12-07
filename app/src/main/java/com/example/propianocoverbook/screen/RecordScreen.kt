@@ -107,7 +107,11 @@ fun RecordScreen() {
             onValueChange = { textOfMemo = it }
         )
 
-        val isButtonEnabled = textOfMusic.isNotBlank() && textOfArtist.isNotBlank() && textOfMemo.isNotBlank()
+        val isButtonEnabled = textOfMusic.isNotBlank()
+                && textOfArtist.isNotBlank()
+                && textOfGenre.isNotBlank()
+                && textOfStyle.isNotBlank()
+                && textOfMemo.isNotBlank()
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
         ProgressSection(stringResource(id = R.string.right_hand)) { RightHandCircularProgressWithSeekBar() }
