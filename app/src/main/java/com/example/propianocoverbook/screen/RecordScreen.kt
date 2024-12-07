@@ -111,15 +111,15 @@ fun RecordScreen(viewModel: MusicInfoViewModel) {
             onValueChange = { textOfMemo = it }
         )
 
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
+        ProgressSection(stringResource(id = R.string.right_hand)) { RightHandCircularProgressWithSeekBar() }
+        ProgressSection(stringResource(id = R.string.left_hand)) { LeftHandCircularProgressWithSeekBar() }
+
         val isButtonEnabled = textOfMusic.isNotBlank()
                 && textOfArtist.isNotBlank()
                 && textOfGenre.isNotBlank()
                 && textOfStyle.isNotBlank()
                 && textOfMemo.isNotBlank()
-
-        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
-        ProgressSection(stringResource(id = R.string.right_hand)) { RightHandCircularProgressWithSeekBar() }
-        ProgressSection(stringResource(id = R.string.left_hand)) { LeftHandCircularProgressWithSeekBar() }
 
         Column(
             modifier = Modifier.fillMaxSize(),
