@@ -29,6 +29,7 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -47,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.propianocoverbook.R
 import com.example.propianocoverbook.data.MusicInfoViewModel
+import kotlinx.coroutines.delay
 
 @Composable
 fun RecordScreen(viewModel: MusicInfoViewModel) {
@@ -320,12 +322,21 @@ private fun SaveButton(
     onClick: () -> Unit = {},
     enabled: Boolean = true
 ) {
+    var showMessage by remember { mutableStateOf(false) }
     Button(
-        onClick = onClick,
+        onClick = { showMessage = true },
         colors = ButtonDefaults.buttonColors(Color.Blue),
         shape = RoundedCornerShape(8.dp),
         enabled = enabled
     ) {
         Text(stringResource(id = R.string.record_button))
+    }
+    if (showMessage) {
+        Spacer(modifier = Modifier.height(16.dp))
+        Text("記録しました。")
+        LaunchedEffect(Unit) {
+            delay(2000)
+            showMessage = false
+        }
     }
 }
