@@ -196,9 +196,12 @@ private fun MusicOutlinedTextField(label: String, placeholder: String, value: St
 }
 
 @Composable
-private fun DropdownMenuWithIcon(items: List<String>, value: String, onValueChange: (String) -> Unit = {}) {
+fun DropdownMenuWithIcon(
+    items: List<String>,
+    value: String,
+    onValueChange: (String) -> Unit
+) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedIndex by remember { mutableStateOf(0) }
 
     Box(
         contentAlignment = Alignment.Center
@@ -211,7 +214,7 @@ private fun DropdownMenuWithIcon(items: List<String>, value: String, onValueChan
                 modifier = Modifier.clickable { expanded = !expanded }
             ) {
                 Text(
-                    text = items[selectedIndex],
+                    text = value, // 現在の値を表示
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Normal,
                     color = Color.Black
@@ -230,11 +233,11 @@ private fun DropdownMenuWithIcon(items: List<String>, value: String, onValueChan
                 onDismissRequest = { expanded = false },
                 offset = DpOffset(0.dp, 8.dp)
             ) {
-                items.forEachIndexed { index, item ->
+                items.forEach { item ->
                     DropdownMenuItem(
                         text = { Text(text = item) },
                         onClick = {
-                            selectedIndex = index
+                            onValueChange(item) // 選択されたアイテムを通知
                             expanded = false
                         }
                     )
