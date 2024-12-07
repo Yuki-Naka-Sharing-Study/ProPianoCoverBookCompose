@@ -68,8 +68,8 @@ private fun MyApp(viewModel: MusicInfoViewModel) {
         ) {
             // 以下、BottomNavigation
             composable("記録確認") { ConfirmScreen() }
-//            composable("record") { RecordScreen(viewModel = viewModel) }
-            composable("記録する") { RecordScreen() }
+            composable("記録する") { RecordScreen(viewModel = viewModel) }
+//            composable("記録する") { RecordScreen() }
             composable("設定") { SettingScreen() }
 
             // 以下、設定画面からの画面遷移

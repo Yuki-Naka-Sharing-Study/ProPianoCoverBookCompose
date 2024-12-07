@@ -48,11 +48,12 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.propianocoverbook.R
+import com.example.propianocoverbook.data.MusicInfoViewModel
 import com.example.propianocoverbook.ui.theme.ProPianoCoverBookTheme
 
 @Composable
-//fun RecordScreen(viewModel: MusicInfoViewModel) {
-fun RecordScreen() {
+fun RecordScreen(viewModel: MusicInfoViewModel) {
+//fun RecordScreen() {
     Column(
         modifier = Modifier.padding(dimensionResource(id = R.dimen.space_16_dp))
     ) {
@@ -127,14 +128,16 @@ fun RecordScreen() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 SaveButton(
-//                    onClick = {
-//                        viewModel.saveValues(
-//                            textOfMusic,
-//                            textOfArtist,
-//                            textOfMemo
-//                        )
-//                    },
-//                    enabled = isButtonEnabled
+                    onClick = {
+                        viewModel.saveValues(
+                            textOfMusic,
+                            textOfArtist,
+                            textOfGenre,
+                            textOfStyle,
+                            textOfMemo
+                        )
+                    },
+                    enabled = isButtonEnabled
                 )
             }
         }
@@ -152,15 +155,15 @@ fun RecordScreen() {
 //    }
 //}
 
-@Preview
-@Composable
-private fun RecordScreenPreview(
-
-) {
-    ProPianoCoverBookTheme {
-        RecordScreen()
-    }
-}
+//@Preview
+//@Composable
+//private fun RecordScreenPreview(
+//
+//) {
+//    ProPianoCoverBookTheme {
+//        RecordScreen()
+//    }
+//}
 
 @Composable
 private fun MusicOutlinedTextField(label: String, placeholder: String, value: String, onValueChange: (String) -> Unit = {}) {

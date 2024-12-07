@@ -23,9 +23,14 @@ class MusicInfoViewModel(
         }
     }
 
-    fun saveValues(textOfMusic: String, textOfArtist: String, textOfMemo: String) {
+    fun saveValues(textOfMusic: String, textOfArtist: String, textOfGenre: String, textOfStyle: String, textOfMemo: String) {
         viewModelScope.launch {
-            repository.saveMusicInfo(textOfMusic, textOfArtist, textOfMemo)
+            repository.saveMusicInfo(
+                textOfMusic,
+                textOfArtist,
+                textOfGenre,
+                textOfStyle,
+                textOfMemo)
         }
     }
 
