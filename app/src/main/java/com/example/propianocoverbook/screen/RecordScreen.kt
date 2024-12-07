@@ -63,7 +63,7 @@ fun RecordScreen() {
         var textOfMemo by rememberSaveable { mutableStateOf("") }
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_16_dp)))
-        RowOutlinedTextField(
+        MusicOutlinedTextField(
             label = stringResource(id = R.string.music_name),
             placeholder = stringResource(id = R.string.placeholder_music),
             value = textOfMusic,
@@ -71,7 +71,7 @@ fun RecordScreen() {
         )
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
-        RowOutlinedTextField(
+        MusicOutlinedTextField(
             label = stringResource(id = R.string.artist_name),
             placeholder = stringResource(id = R.string.placeholder_artist),
             value = textOfArtist,
@@ -100,7 +100,7 @@ fun RecordScreen() {
         }
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
-        RowOutlinedTextField(
+        MusicOutlinedTextField(
             label = stringResource(id = R.string.memo_name),
             placeholder = stringResource(id = R.string.placeholder_memo),
             value = textOfMemo,
@@ -163,7 +163,7 @@ private fun RecordScreenPreview(
 }
 
 @Composable
-private fun RowOutlinedTextField(label: String, placeholder: String, value: String, onValueChange: (String) -> Unit = {}) {
+private fun MusicOutlinedTextField(label: String, placeholder: String, value: String, onValueChange: (String) -> Unit = {}) {
     Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
