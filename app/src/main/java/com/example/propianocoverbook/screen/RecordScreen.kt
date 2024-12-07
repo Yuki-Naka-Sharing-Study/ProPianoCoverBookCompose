@@ -34,6 +34,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -62,6 +63,8 @@ fun RecordScreen(viewModel: MusicInfoViewModel) {
         var textOfGenre by rememberSaveable { mutableStateOf("") }
         var textOfStyle by rememberSaveable { mutableStateOf("") }
         var textOfMemo by rememberSaveable { mutableStateOf("") }
+        var numOfRightHand by rememberSaveable { mutableIntStateOf(0) }
+        var numOfLeftHand by rememberSaveable { mutableIntStateOf(0) }
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_16_dp)))
         MusicOutlinedTextField(
