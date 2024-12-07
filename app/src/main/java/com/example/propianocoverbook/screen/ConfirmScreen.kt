@@ -193,6 +193,7 @@ private fun MusicInfoLazyColumn() {
     LazyColumn(modifier = Modifier.fillMaxWidth()) {
         items(4) { index ->
 
+            // 以下が完成のイメージのコード
             Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
 
             Row(
@@ -217,6 +218,32 @@ private fun MusicInfoLazyColumn() {
                 ArtistNameTextView(artistName = "")
                 Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
                 ArtistNameUserEnteredTextView(artistName = "")
+            }
+
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_24_dp)))
+                GenreNameTextView(genreName = "")
+                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
+                GenreNameUserEnteredTextView(genreName = "")
+            }
+
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_24_dp)))
+                StyleNameTextView(styleName = "")
+                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
+                StyleNameUserEnteredTextView(styleName = "")
             }
 
             Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
