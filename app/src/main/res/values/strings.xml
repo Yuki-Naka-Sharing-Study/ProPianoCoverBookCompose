@@ -18,6 +18,9 @@
     <string name="genre_name">ジャンル</string>
     <string name="genre_user_input">クラシック</string>
 
+    <string name="style_name">演奏スタイル</string>
+    <string name="style_user_input">独奏</string>
+
     <string name="memo_name">メモ</string>
     <string name="placeholder_memo">アルペジオが上手く弾けない。</string>
 
