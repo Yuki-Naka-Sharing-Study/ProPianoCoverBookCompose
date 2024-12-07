@@ -216,7 +216,7 @@ private fun MusicOutlinedTextField(
 }
 
 @Composable
-fun DropdownMenuWithIcon(
+private fun DropdownMenuWithIcon(
     items: List<String>,
     value: String,
     onValueChange: (String) -> Unit
