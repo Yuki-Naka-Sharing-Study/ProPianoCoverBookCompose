@@ -344,6 +344,38 @@ private fun ArtistNameUserEnteredTextViewPreview() {
 }
 
 @Composable
+private fun GenreNameTextView(genreName: String, modifier: Modifier = Modifier) {
+    Text(
+        text = stringResource(id = R.string.genre_name),
+        modifier = modifier
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun GenreNameTextViewPreview() {
+    ProPianoCoverBookTheme {
+        GenreNameTextView(stringResource(id = R.string.genre_name))
+    }
+}
+
+@Composable
+private fun GenreNameUserEnteredTextView(genreName: String, modifier: Modifier = Modifier) {
+    Text(
+        text = stringResource(id = R.string.genre_user_input),
+        modifier = modifier
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun GenreNameUserEnteredTextViewPreview() {
+    ProPianoCoverBookTheme {
+        GenreNameUserEnteredTextView(stringResource(id = R.string.genre_user_input))
+    }
+}
+
+@Composable
 private fun MemoTextView(memoName: String, modifier: Modifier = Modifier) {
     Text(
         text = stringResource(id = R.string.memo_name),

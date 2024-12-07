@@ -15,6 +15,9 @@
     <string name="artist_name">作曲者名</string>
     <string name="placeholder_artist">リスト</string>
 
+    <string name="genre_name">ジャンル</string>
+    <string name="genre_user_input">クラシック</string>
+
     <string name="memo_name">メモ</string>
     <string name="placeholder_memo">アルペジオが上手く弾けない。</string>
 
