@@ -1,5 +1,6 @@
 package com.example.propianocoverbook.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -39,6 +40,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -322,21 +324,17 @@ private fun SaveButton(
     onClick: () -> Unit = {},
     enabled: Boolean = true
 ) {
-    var showMessage by remember { mutableStateOf(false) }
+    val context = LocalContext.current
     Button(
-        onClick = { showMessage = true },
+        onClick = { showToast(context, "記録しました") },
         colors = ButtonDefaults.buttonColors(Color.Blue),
         shape = RoundedCornerShape(8.dp),
-        enabled = enabled
+        enabled = enabled,
     ) {
         Text(stringResource(id = R.string.record_button))
     }
-    if (showMessage) {
-        Spacer(modifier = Modifier.height(16.dp))
-        Text("記録しました。")
-        LaunchedEffect(Unit) {
-            delay(2000)
-            showMessage = false
-        }
-    }
+}
+
+private fun showToast(context: android.content.Context, message: String) {
+    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }
