@@ -35,8 +35,8 @@ import com.example.propianocoverbook.screen.RecordScreen
 import com.example.propianocoverbook.screen.SettingScreen
 
 class MainActivity : ComponentActivity() {
-    private val repository: MusicInfoRepository = MusicInfoRepository()
     private lateinit var musicInfoDao: MusicInfoDao
+    private val repository: MusicInfoRepository = MusicInfoRepository()
     private val viewModel: MusicInfoViewModel by viewModels {
         MusicInfoViewModelFactory(repository, musicInfoDao)
     }
@@ -67,7 +67,7 @@ private fun MyApp(viewModel: MusicInfoViewModel) {
             Modifier.padding(innerPadding)
         ) {
             // 以下、BottomNavigation
-            composable("記録確認") { ConfirmScreen() }
+            composable("記録確認") { ConfirmScreen(viewModel = viewModel) }
             composable("記録する") { RecordScreen(viewModel = viewModel) }
 //            composable("記録する") { RecordScreen() }
             composable("設定") { SettingScreen() }

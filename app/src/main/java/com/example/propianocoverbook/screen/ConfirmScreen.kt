@@ -1,7 +1,9 @@
 package com.example.propianocoverbook.screen
 
+import android.graphics.Color
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,15 +17,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -36,25 +44,28 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.propianocoverbook.R
+import com.example.propianocoverbook.data.MusicInfoViewModel
 import com.example.propianocoverbook.ui.theme.ProPianoCoverBookTheme
+import kotlinx.coroutines.launch
 
 @Composable
-fun ConfirmScreen() {
+fun ConfirmScreen(viewModel: MusicInfoViewModel) {
+//fun ConfirmScreen() {
     // ComposeのUIを定義
 
     // 以下は「記録無し」のコード
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            NoRecordImageView()
-            NoRecordText()
-            NoRecordDescriptionText()
-        }
-    }
+//    Box(
+//        modifier = Modifier.fillMaxSize(),
+//        contentAlignment = Alignment.Center
+//    ) {
+//        Column(
+//            horizontalAlignment = Alignment.CenterHorizontally,
+//        ) {
+//            NoRecordImageView()
+//            NoRecordText()
+//            NoRecordDescriptionText()
+//        }
+//    }
 
     // 以下は「記録あり」のコード
     Box(
@@ -65,18 +76,21 @@ fun ConfirmScreen() {
             verticalArrangement = Arrangement.Top
         ) {
             SearchScreen()
-//            MusicInfoLazyColumn()
+
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_16_dp)))
+
+            MusicInfoLazyColumn(viewModel)
         }
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-private fun ConfirmScreenPreview() {
-    ProPianoCoverBookTheme {
-        ConfirmScreen()
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//private fun ConfirmScreenPreview() {
+//    ProPianoCoverBookTheme {
+//        ConfirmScreen()
+//    }
+//}
 
 @Composable
 private fun NoRecordImageView(modifier: Modifier = Modifier) {
@@ -187,6 +201,50 @@ private fun SearchScreen() {
         // 検索結果を表示するためのUIをここに追加。
     }
 }
+
+// REAL
+@Composable
+private fun MusicInfoLazyColumn(viewModel: MusicInfoViewModel) {
+    val items by viewModel.musicInfo.collectAsState()
+    val scope = rememberCoroutineScope()
+
+    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+        // リスト表示
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
+            items(items) { item ->
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                        .padding(16.dp)
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(item.nameOfMusic)
+                        Text(item.nameOfArtist)
+                        Text(item.nameOfJenre)
+                        Text(item.nameOfStyle)
+                        Text(item.nameOfMemo)
+                        Text(item.levelOfRightHand.toString())
+                        Text(item.levelOfLeftHand.toString())
+                    }
+                    // 削除ボタン
+                    IconButton(
+                        onClick = {
+                            scope.launch {
+//                                viewModel.deleteItem(item)
+                            }
+                        }
+                    ) {
+                        Icon(Icons.Default.Delete, contentDescription = "Delete Item")
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+// FAKE
 
 //@Composable
 //private fun MusicInfoLazyColumn() {

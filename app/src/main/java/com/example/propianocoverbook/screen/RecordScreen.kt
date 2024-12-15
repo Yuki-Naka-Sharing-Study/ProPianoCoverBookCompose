@@ -144,6 +144,9 @@ fun RecordScreen(viewModel: MusicInfoViewModel) {
             ) {
                 SaveButton(
                     onClick = {
+                        // 以下のsaveValuesの引数の箇所に全てブレイクポイントを貼った結果
+                        // 処理が通っていないことが判明。→ データがそもそも保存されていない。
+                        // → 宣言元のsaveValuesに原因がある？
                         viewModel.saveValues(
                             textOfMusic,
                             textOfArtist,
