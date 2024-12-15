@@ -30,7 +30,6 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -50,7 +49,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.propianocoverbook.R
 import com.example.propianocoverbook.data.MusicInfoViewModel
-import kotlinx.coroutines.delay
 
 @Composable
 fun RecordScreen(viewModel: MusicInfoViewModel) {

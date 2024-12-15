@@ -65,7 +65,7 @@ fun ConfirmScreen() {
             verticalArrangement = Arrangement.Top
         ) {
             SearchScreen()
-            MusicInfoLazyColumn()
+//            MusicInfoLazyColumn()
         }
     }
 }
@@ -188,344 +188,344 @@ private fun SearchScreen() {
     }
 }
 
-@Composable
-private fun MusicInfoLazyColumn() {
-    LazyColumn(modifier = Modifier.fillMaxWidth()) {
-        items(4) { index ->
-
-            // 以下が完成のイメージのコード
-            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_24_dp)))
-                SongNameTextView(songName = "")
-                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
-                SongNameUserEnteredTextView(songName = "")
-            }
-
-            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_24_dp)))
-                ArtistNameTextView(artistName = "")
-                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
-                ArtistNameUserEnteredTextView(artistName = "")
-            }
-
-            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_24_dp)))
-                GenreNameTextView(genreName = "")
-                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
-                GenreNameUserEnteredTextView(genreName = "")
-            }
-
-            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_24_dp)))
-                StyleNameTextView(styleName = "")
-                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
-                StyleNameUserEnteredTextView(styleName = "")
-            }
-
-            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_24_dp)))
-                MemoTextView(memoName = "")
-                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
-                MemoUserEnteredTextView(memoName = "")
-            }
-
-            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_24_dp)))
-                RightHandTextView(rightHand = "")
-                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
-                RightHandUserEnteredTextView(rightHand = "")
-            }
-
-            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_24_dp)))
-                LeftHandTextView(leftHand = "")
-                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
-                LeftHandUserEnteredTextView(leftHand = "")
-            }
-
-            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
-
-            Divider(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth(),
-                color = androidx.compose.ui.graphics.Color.LightGray,
-                thickness = 1.dp,
-            )
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun MusicInfoLazyColumnPreview() {
-    ProPianoCoverBookTheme {
-        MusicInfoLazyColumn()
-    }
-}
-
-@Composable
-private fun SongNameTextView(songName: String, modifier: Modifier = Modifier) {
-    Text(
-        text = stringResource(id = R.string.music_name),
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun SongNameTextViewPreview() {
-    ProPianoCoverBookTheme {
-        SongNameTextView(stringResource(id = R.string.music_name))
-    }
-}
-
-@Composable
-private fun SongNameUserEnteredTextView(songName: String, modifier: Modifier = Modifier) {
-    Text(
-        text = stringResource(id = R.string.placeholder_music),
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun SongNameUserEnteredTextViewPreview() {
-    ProPianoCoverBookTheme {
-        SongNameUserEnteredTextView(stringResource(id = R.string.placeholder_music))
-    }
-}
-
-@Composable
-private fun ArtistNameTextView(artistName: String, modifier: Modifier = Modifier) {
-    Text(
-        text = stringResource(id = R.string.artist_name),
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun ArtistNameTextViewPreview() {
-    ProPianoCoverBookTheme {
-        ArtistNameTextView(stringResource(id = R.string.artist_name))
-    }
-}
-
-@Composable
-private fun ArtistNameUserEnteredTextView(artistName: String, modifier: Modifier = Modifier) {
-    Text(
-        text = stringResource(id = R.string.placeholder_artist),
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun ArtistNameUserEnteredTextViewPreview() {
-    ProPianoCoverBookTheme {
-        ArtistNameUserEnteredTextView(stringResource(id = R.string.placeholder_artist))
-    }
-}
-
-@Composable
-private fun GenreNameTextView(genreName: String, modifier: Modifier = Modifier) {
-    Text(
-        text = stringResource(id = R.string.genre_name),
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun GenreNameTextViewPreview() {
-    ProPianoCoverBookTheme {
-        GenreNameTextView(stringResource(id = R.string.genre_name))
-    }
-}
-
-@Composable
-private fun GenreNameUserEnteredTextView(genreName: String, modifier: Modifier = Modifier) {
-    Text(
-        text = stringResource(id = R.string.genre_user_input),
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun GenreNameUserEnteredTextViewPreview() {
-    ProPianoCoverBookTheme {
-        GenreNameUserEnteredTextView(stringResource(id = R.string.genre_user_input))
-    }
-}
-
-@Composable
-private fun StyleNameTextView(styleName: String, modifier: Modifier = Modifier) {
-    Text(
-        text = stringResource(id = R.string.style_name),
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun StyleNameTextViewPreview() {
-    ProPianoCoverBookTheme {
-        StyleNameTextView(stringResource(id = R.string.style_name))
-    }
-}
-
-@Composable
-private fun StyleNameUserEnteredTextView(styleName: String, modifier: Modifier = Modifier) {
-    Text(
-        text = stringResource(id = R.string.style_user_input),
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun StyleNameUserEnteredTextViewPreview() {
-    ProPianoCoverBookTheme {
-        StyleNameUserEnteredTextView(stringResource(id = R.string.style_user_input))
-    }
-}
-
-@Composable
-private fun MemoTextView(memoName: String, modifier: Modifier = Modifier) {
-    Text(
-        text = stringResource(id = R.string.memo_name),
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun MemoTextViewPreview() {
-    ProPianoCoverBookTheme {
-        MemoTextView(stringResource(id = R.string.memo_name))
-    }
-}
-
-@Composable
-private fun MemoUserEnteredTextView(memoName: String, modifier: Modifier = Modifier) {
-    Text(
-        text = stringResource(id = R.string.placeholder_memo),
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun MemoUserEnteredTextViewPreview() {
-    ProPianoCoverBookTheme {
-        MemoUserEnteredTextView(stringResource(id = R.string.placeholder_memo))
-    }
-}
-
-@Composable
-private fun RightHandTextView(rightHand: String, modifier: Modifier = Modifier) {
-    Text(
-        text = stringResource(id = R.string.right_hand),
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun RightHandTextViewPreview() {
-    ProPianoCoverBookTheme {
-        RightHandTextView(stringResource(id = R.string.right_hand))
-    }
-}
-
-@Composable
-private fun RightHandUserEnteredTextView(rightHand: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "100",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun RightHandUserEnteredTextViewPreview() {
-    ProPianoCoverBookTheme {
-        RightHandUserEnteredTextView("100")
-    }
-}
-
-@Composable
-private fun LeftHandTextView(leftHand: String, modifier: Modifier = Modifier) {
-    Text(
-        text = stringResource(id = R.string.left_hand),
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun LeftHandTextViewPreview() {
-    ProPianoCoverBookTheme {
-        LeftHandTextView(stringResource(id = R.string.left_hand))
-    }
-}
-
-@Composable
-private fun LeftHandUserEnteredTextView(leftHand: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "90",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun LeftHandUserEnteredTextViewPreview() {
-    ProPianoCoverBookTheme {
-        LeftHandUserEnteredTextView("90")
-    }
-}
+//@Composable
+//private fun MusicInfoLazyColumn() {
+//    LazyColumn(modifier = Modifier.fillMaxWidth()) {
+//        items(4) { index ->
+//
+//            // 以下が完成のイメージのコード
+//            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
+//
+//            Row(
+//                modifier = Modifier
+//                    .fillMaxWidth(),
+//                verticalAlignment = Alignment.CenterVertically
+//            ) {
+//                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_24_dp)))
+//                SongNameTextView(songName = "")
+//                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
+//                SongNameUserEnteredTextView(songName = "")
+//            }
+//
+//            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
+//
+//            Row(
+//                modifier = Modifier
+//                    .fillMaxWidth(),
+//                verticalAlignment = Alignment.CenterVertically
+//            ) {
+//                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_24_dp)))
+//                ArtistNameTextView(artistName = "")
+//                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
+//                ArtistNameUserEnteredTextView(artistName = "")
+//            }
+//
+//            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
+//
+//            Row(
+//                modifier = Modifier
+//                    .fillMaxWidth(),
+//                verticalAlignment = Alignment.CenterVertically
+//            ) {
+//                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_24_dp)))
+//                GenreNameTextView(genreName = "")
+//                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
+//                GenreNameUserEnteredTextView(genreName = "")
+//            }
+//
+//            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
+//
+//            Row(
+//                modifier = Modifier
+//                    .fillMaxWidth(),
+//                verticalAlignment = Alignment.CenterVertically
+//            ) {
+//                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_24_dp)))
+//                StyleNameTextView(styleName = "")
+//                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
+//                StyleNameUserEnteredTextView(styleName = "")
+//            }
+//
+//            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
+//
+//            Row(
+//                modifier = Modifier
+//                    .fillMaxWidth(),
+//                verticalAlignment = Alignment.CenterVertically
+//            ) {
+//                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_24_dp)))
+//                MemoTextView(memoName = "")
+//                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
+//                MemoUserEnteredTextView(memoName = "")
+//            }
+//
+//            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
+//
+//            Row(
+//                modifier = Modifier
+//                    .fillMaxWidth(),
+//                verticalAlignment = Alignment.CenterVertically
+//            ) {
+//                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_24_dp)))
+//                RightHandTextView(rightHand = "")
+//                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
+//                RightHandUserEnteredTextView(rightHand = "")
+//            }
+//
+//            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
+//
+//            Row(
+//                modifier = Modifier
+//                    .fillMaxWidth(),
+//                verticalAlignment = Alignment.CenterVertically
+//            ) {
+//                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_24_dp)))
+//                LeftHandTextView(leftHand = "")
+//                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
+//                LeftHandUserEnteredTextView(leftHand = "")
+//            }
+//
+//            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
+//
+//            Divider(
+//                modifier = Modifier
+//                    .padding(16.dp)
+//                    .fillMaxWidth(),
+//                color = androidx.compose.ui.graphics.Color.LightGray,
+//                thickness = 1.dp,
+//            )
+//        }
+//    }
+//}
+//
+//@Preview(showBackground = true)
+//@Composable
+//private fun MusicInfoLazyColumnPreview() {
+//    ProPianoCoverBookTheme {
+//        MusicInfoLazyColumn()
+//    }
+//}
+//
+//@Composable
+//private fun SongNameTextView(songName: String, modifier: Modifier = Modifier) {
+//    Text(
+//        text = stringResource(id = R.string.music_name),
+//        modifier = modifier
+//    )
+//}
+//
+//@Preview(showBackground = true)
+//@Composable
+//private fun SongNameTextViewPreview() {
+//    ProPianoCoverBookTheme {
+//        SongNameTextView(stringResource(id = R.string.music_name))
+//    }
+//}
+//
+//@Composable
+//private fun SongNameUserEnteredTextView(songName: String, modifier: Modifier = Modifier) {
+//    Text(
+//        text = stringResource(id = R.string.placeholder_music),
+//        modifier = modifier
+//    )
+//}
+//
+//@Preview(showBackground = true)
+//@Composable
+//private fun SongNameUserEnteredTextViewPreview() {
+//    ProPianoCoverBookTheme {
+//        SongNameUserEnteredTextView(stringResource(id = R.string.placeholder_music))
+//    }
+//}
+//
+//@Composable
+//private fun ArtistNameTextView(artistName: String, modifier: Modifier = Modifier) {
+//    Text(
+//        text = stringResource(id = R.string.artist_name),
+//        modifier = modifier
+//    )
+//}
+//
+//@Preview(showBackground = true)
+//@Composable
+//private fun ArtistNameTextViewPreview() {
+//    ProPianoCoverBookTheme {
+//        ArtistNameTextView(stringResource(id = R.string.artist_name))
+//    }
+//}
+//
+//@Composable
+//private fun ArtistNameUserEnteredTextView(artistName: String, modifier: Modifier = Modifier) {
+//    Text(
+//        text = stringResource(id = R.string.placeholder_artist),
+//        modifier = modifier
+//    )
+//}
+//
+//@Preview(showBackground = true)
+//@Composable
+//private fun ArtistNameUserEnteredTextViewPreview() {
+//    ProPianoCoverBookTheme {
+//        ArtistNameUserEnteredTextView(stringResource(id = R.string.placeholder_artist))
+//    }
+//}
+//
+//@Composable
+//private fun GenreNameTextView(genreName: String, modifier: Modifier = Modifier) {
+//    Text(
+//        text = stringResource(id = R.string.genre_name),
+//        modifier = modifier
+//    )
+//}
+//
+//@Preview(showBackground = true)
+//@Composable
+//private fun GenreNameTextViewPreview() {
+//    ProPianoCoverBookTheme {
+//        GenreNameTextView(stringResource(id = R.string.genre_name))
+//    }
+//}
+//
+//@Composable
+//private fun GenreNameUserEnteredTextView(genreName: String, modifier: Modifier = Modifier) {
+//    Text(
+//        text = stringResource(id = R.string.genre_user_input),
+//        modifier = modifier
+//    )
+//}
+//
+//@Preview(showBackground = true)
+//@Composable
+//private fun GenreNameUserEnteredTextViewPreview() {
+//    ProPianoCoverBookTheme {
+//        GenreNameUserEnteredTextView(stringResource(id = R.string.genre_user_input))
+//    }
+//}
+//
+//@Composable
+//private fun StyleNameTextView(styleName: String, modifier: Modifier = Modifier) {
+//    Text(
+//        text = stringResource(id = R.string.style_name),
+//        modifier = modifier
+//    )
+//}
+//
+//@Preview(showBackground = true)
+//@Composable
+//private fun StyleNameTextViewPreview() {
+//    ProPianoCoverBookTheme {
+//        StyleNameTextView(stringResource(id = R.string.style_name))
+//    }
+//}
+//
+//@Composable
+//private fun StyleNameUserEnteredTextView(styleName: String, modifier: Modifier = Modifier) {
+//    Text(
+//        text = stringResource(id = R.string.style_user_input),
+//        modifier = modifier
+//    )
+//}
+//
+//@Preview(showBackground = true)
+//@Composable
+//private fun StyleNameUserEnteredTextViewPreview() {
+//    ProPianoCoverBookTheme {
+//        StyleNameUserEnteredTextView(stringResource(id = R.string.style_user_input))
+//    }
+//}
+//
+//@Composable
+//private fun MemoTextView(memoName: String, modifier: Modifier = Modifier) {
+//    Text(
+//        text = stringResource(id = R.string.memo_name),
+//        modifier = modifier
+//    )
+//}
+//
+//@Preview(showBackground = true)
+//@Composable
+//private fun MemoTextViewPreview() {
+//    ProPianoCoverBookTheme {
+//        MemoTextView(stringResource(id = R.string.memo_name))
+//    }
+//}
+//
+//@Composable
+//private fun MemoUserEnteredTextView(memoName: String, modifier: Modifier = Modifier) {
+//    Text(
+//        text = stringResource(id = R.string.placeholder_memo),
+//        modifier = modifier
+//    )
+//}
+//
+//@Preview(showBackground = true)
+//@Composable
+//private fun MemoUserEnteredTextViewPreview() {
+//    ProPianoCoverBookTheme {
+//        MemoUserEnteredTextView(stringResource(id = R.string.placeholder_memo))
+//    }
+//}
+//
+//@Composable
+//private fun RightHandTextView(rightHand: String, modifier: Modifier = Modifier) {
+//    Text(
+//        text = stringResource(id = R.string.right_hand),
+//        modifier = modifier
+//    )
+//}
+//
+//@Preview(showBackground = true)
+//@Composable
+//private fun RightHandTextViewPreview() {
+//    ProPianoCoverBookTheme {
+//        RightHandTextView(stringResource(id = R.string.right_hand))
+//    }
+//}
+//
+//@Composable
+//private fun RightHandUserEnteredTextView(rightHand: String, modifier: Modifier = Modifier) {
+//    Text(
+//        text = "100",
+//        modifier = modifier
+//    )
+//}
+//
+//@Preview(showBackground = true)
+//@Composable
+//private fun RightHandUserEnteredTextViewPreview() {
+//    ProPianoCoverBookTheme {
+//        RightHandUserEnteredTextView("100")
+//    }
+//}
+//
+//@Composable
+//private fun LeftHandTextView(leftHand: String, modifier: Modifier = Modifier) {
+//    Text(
+//        text = stringResource(id = R.string.left_hand),
+//        modifier = modifier
+//    )
+//}
+//
+//@Preview(showBackground = true)
+//@Composable
+//private fun LeftHandTextViewPreview() {
+//    ProPianoCoverBookTheme {
+//        LeftHandTextView(stringResource(id = R.string.left_hand))
+//    }
+//}
+//
+//@Composable
+//private fun LeftHandUserEnteredTextView(leftHand: String, modifier: Modifier = Modifier) {
+//    Text(
+//        text = "90",
+//        modifier = modifier
+//    )
+//}
+//
+//@Preview(showBackground = true)
+//@Composable
+//private fun LeftHandUserEnteredTextViewPreview() {
+//    ProPianoCoverBookTheme {
+//        LeftHandUserEnteredTextView("90")
+//    }
+//}
