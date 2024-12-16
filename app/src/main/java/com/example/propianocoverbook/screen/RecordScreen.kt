@@ -327,7 +327,10 @@ private fun SaveButton(
 ) {
     val context = LocalContext.current
     Button(
-        onClick = { showToast(context, "記録しました") },
+        onClick = {
+            onClick()
+            showToast(context, "記録しました")
+        },
         colors = ButtonDefaults.buttonColors(Color.Blue),
         shape = RoundedCornerShape(8.dp),
         enabled = enabled,

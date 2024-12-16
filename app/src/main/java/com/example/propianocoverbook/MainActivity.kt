@@ -36,7 +36,9 @@ import com.example.propianocoverbook.screen.SettingScreen
 
 class MainActivity : ComponentActivity() {
     private lateinit var musicInfoDao: MusicInfoDao
-    private val repository: MusicInfoRepository = MusicInfoRepository()
+    private val repository: MusicInfoRepository by lazy {
+        MusicInfoRepository(musicInfoDao)
+    }
     private val viewModel: MusicInfoViewModel by viewModels {
         MusicInfoViewModelFactory(repository, musicInfoDao)
     }
