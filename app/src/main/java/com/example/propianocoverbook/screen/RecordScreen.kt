@@ -85,7 +85,7 @@ fun RecordScreen(viewModel: MusicInfoViewModel) {
             Text(text = "ジャンル")
             Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
             DropdownMenuWithIcon(
-                items = listOf("Classic", "Jazz", "Pop", "Rock", "Others"),
+                items = listOf("クラシック", "ジャズ", "ポップス", "ロック", "その他"),
                 value = textOfGenre,
                 onValueChange = { textOfGenre = it }
             )
@@ -95,7 +95,7 @@ fun RecordScreen(viewModel: MusicInfoViewModel) {
             Text(text = "演奏スタイル")
             Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
             DropdownMenuWithIcon(
-                items = listOf("独奏", "伴奏", "弾き語り"),
+                items = listOf("独奏", "連弾", "伴奏", "弾き語り"),
                 value = textOfStyle,
                 onValueChange = { textOfStyle = it }
             )
