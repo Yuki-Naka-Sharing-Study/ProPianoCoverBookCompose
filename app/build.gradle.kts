@@ -55,9 +55,12 @@ android {
 }
 
 dependencies {
-    implementation("androidx.core:core-splashscreen:1.0.0")
-    implementation("androidx.compose.material:material-icons-extended:1.1.1")
-    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation("androidx.compose.material:material-icons-extended:1.7.7")
+    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation("androidx.datastore:datastore-preferences:1.1.2")
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.27.1")
+    implementation("com.google.accompanist:accompanist-pager:0.27.1")
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)

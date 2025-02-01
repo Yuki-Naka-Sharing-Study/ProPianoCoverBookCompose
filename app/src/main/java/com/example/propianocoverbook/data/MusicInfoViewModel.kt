@@ -1,18 +1,39 @@
 package com.example.propianocoverbook.data
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class MusicInfoViewModel(
     private val repository: MusicInfoRepository,
-    private val musicInfoDao: MusicInfoDao
+    private val musicInfoDao: MusicInfoDao,
+    private val dataStore: DataStore<Preferences>
 ) : ViewModel() {
     private val _musicInfo = MutableStateFlow<List<MusicInfo>>(emptyList())
     val musicInfo: StateFlow<List<MusicInfo>> get() = _musicInfo.asStateFlow()
+
+    private val ONBOARDING_COMPLETED_KEY = booleanPreferencesKey("onboarding_completed")
+
+    val isFirstLaunch: Flow<Boolean> = dataStore.data.map { preferences ->
+        preferences[ONBOARDING_COMPLETED_KEY] ?: true
+    }
+
+    fun completeOnboarding() {
+        viewModelScope.launch {
+            dataStore.edit { preferences ->
+                preferences[ONBOARDING_COMPLETED_KEY] = false
+            }
+        }
+    }
 
     init {
         viewModelScope.launch {
