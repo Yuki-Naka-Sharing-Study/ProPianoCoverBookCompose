@@ -63,7 +63,7 @@ fun ConfirmScreen(viewModel: MusicInfoViewModel) {
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "まだスコアが登録されていません。",
+                text = "まだデータが登録されていません。",
                 fontSize = 18.sp,
                 color = androidx.compose.ui.graphics.Color.Gray
             )
