@@ -1,8 +1,6 @@
 package com.example.propianocoverbook.data
 
 class MusicInfoRepository(private val musicInfoDao: MusicInfoDao) {
-    suspend fun getAllItems() = musicInfoDao.getAllMusicInfo()
-
     suspend fun saveMusicInfo(
         textOfMusic: String,
         textOfArtist: String,
@@ -21,8 +19,15 @@ class MusicInfoRepository(private val musicInfoDao: MusicInfoDao) {
             levelOfRightHand = numOfRightHand.toInt(),
             levelOfLeftHand = numOfLeftHand.toInt()
         )
-
         musicInfoDao.insertMusicInfo(musicInfo)
-
+    }
+    suspend fun getAllMusicInfo(): List<MusicInfo> {
+        return musicInfoDao.getAllMusicInfo()
+    }
+    suspend fun deleteMusicInfo(musicInfo: MusicInfo) {
+        musicInfoDao.deleteMusicInfo(musicInfo)
+    }
+    suspend fun updateMusicInfo(musicInfo: MusicInfo) {
+        musicInfoDao.updateMusicInfo(musicInfo)
     }
 }

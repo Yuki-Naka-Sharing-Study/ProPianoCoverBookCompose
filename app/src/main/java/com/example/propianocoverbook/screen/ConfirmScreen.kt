@@ -1,85 +1,86 @@
 package com.example.propianocoverbook.screen
 
-import android.graphics.Color
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.AlertDialog
+import androidx.compose.material.Button
+import androidx.compose.material.Card
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Divider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.unit.dp
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+
 import com.example.propianocoverbook.R
+import com.example.propianocoverbook.data.MusicInfo
 import com.example.propianocoverbook.data.MusicInfoViewModel
 import com.example.propianocoverbook.ui.theme.ProPianoCoverBookTheme
-import kotlinx.coroutines.launch
 
 @Composable
 fun ConfirmScreen(viewModel: MusicInfoViewModel) {
-//fun ConfirmScreen() {
-    // ComposeのUIを定義
+    val musicInfoList = viewModel.musicInfo.collectAsState().value
 
-    // 以下は「記録無し」のコード
-//    Box(
-//        modifier = Modifier.fillMaxSize(),
-//        contentAlignment = Alignment.Center
-//    ) {
-//        Column(
-//            horizontalAlignment = Alignment.CenterHorizontally,
-//        ) {
-//            NoRecordImageView()
-//            NoRecordText()
-//            NoRecordDescriptionText()
-//        }
-//    }
-
-    // 以下は「記録あり」のコード
-    Box(
-        modifier = Modifier.fillMaxSize(),
-    ) {
+    if (musicInfoList.isEmpty()) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "まだスコアが登録されていません。",
+                fontSize = 18.sp,
+                color = androidx.compose.ui.graphics.Color.Gray
+            )
+        }
+    } else {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
             SearchScreen()
-
-            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_16_dp)))
-
-            MusicInfoLazyColumn(viewModel)
+            LazyColumn(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                items(items = musicInfoList) { musicInfo ->
+                    MusicItem(musicInfo = musicInfo, viewModel)
+                }
+            }
         }
     }
 }
@@ -93,6 +94,223 @@ fun ConfirmScreen(viewModel: MusicInfoViewModel) {
 //}
 
 @Composable
+private fun MusicItem(
+    musicInfo: MusicInfo,
+    viewModel: MusicInfoViewModel
+) {
+    var showEditDialog by remember { mutableStateOf(false) }
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        elevation = 4.dp
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Column(
+                modifier = Modifier.align(Alignment.CenterStart)
+            ) {
+                Text(text = "曲名: ${musicInfo.nameOfMusic}")
+                Text(text = "作曲者名: ${musicInfo.nameOfArtist}")
+                Text(text = "ジャンル: ${musicInfo.nameOfJenre}")
+                Text(text = "演奏スタイル: ${musicInfo.nameOfStyle}")
+                Text(text = "メモ: ${musicInfo.nameOfMemo}")
+                Text(text = "右手の習熟度: ${musicInfo.levelOfRightHand}")
+                Text(text = "左手の習熟度: ${musicInfo.levelOfLeftHand}")
+            }
+            Menu(
+                modifier = Modifier.align(Alignment.CenterEnd),
+                viewModel = viewModel,
+                musicInfo = musicInfo,
+                onEdit = { showEditDialog = true }
+            )
+        }
+    }
+    if (showEditDialog) {
+        EditToeicDialog(
+            musicInfo = musicInfo,
+            viewModel = viewModel,
+            onDismiss = { showEditDialog = false }
+        )
+    }
+}
+
+@Composable
+private fun Menu(
+    modifier: Modifier = Modifier,
+    viewModel: MusicInfoViewModel,
+    musicInfo: MusicInfo,
+    onEdit: () -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
+    var showDialog by remember { mutableStateOf(false) }
+
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.End
+    ) {
+        IconButton(
+            onClick = {
+                expanded = true
+            }
+        ) {
+            Icon(
+                Icons.Filled.MoreVert,
+                contentDescription = "",
+                tint = Color(0xFF9C27B0)
+            )
+        }
+        DropdownMenu(
+            modifier = Modifier
+                .background(MaterialTheme.colors.background)
+                .clip(RoundedCornerShape(16.dp))
+                .background(MaterialTheme.colors.onSurface),
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            DropdownMenuItem(
+                onClick = {
+                    expanded = false
+                    onEdit()
+                }
+            ) {
+                Text(
+                    text = "編集",
+                    fontSize = 24.sp,
+                    color = Color.Gray,
+                )
+            }
+            DropdownMenuItem(
+                onClick = {
+                    expanded = false
+                    showDialog = true
+                }
+            ) {
+                Text(
+                    text = "削除",
+                    fontSize = 24.sp,
+                    color = Color.Gray,
+                )
+            }
+        }
+    }
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            title = { Text("削除確認") },
+            text = { Text("このデータを削除しますか？") },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        viewModel.deleteMusicValues(musicInfo)
+                        showDialog = false
+                    }
+                ) {
+                    Text("削除", color = Color.Red)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDialog = false }) {
+                    Text("キャンセル")
+                }
+            }
+        )
+    }
+}
+
+@Composable
+private fun EditToeicDialog(
+    musicInfo: MusicInfo,
+    viewModel: MusicInfoViewModel,
+    onDismiss: () -> Unit
+) {
+    var nameOfMusic by remember { mutableStateOf(musicInfo.nameOfMusic) }
+    var nameOfArtist by remember { mutableStateOf(musicInfo.nameOfArtist) }
+    var nameOfJenre by remember { mutableStateOf(musicInfo.nameOfJenre) }
+    var nameOfStyle by remember { mutableStateOf(musicInfo.nameOfStyle) }
+    var nameOfMemo by remember { mutableStateOf(musicInfo.nameOfMemo) }
+    var levelOfRightHand by remember { mutableStateOf(musicInfo.levelOfRightHand.toString()) }
+    var levelOfLeftHand by remember { mutableStateOf(musicInfo.levelOfLeftHand.toString()) }
+
+    AlertDialog(
+        onDismissRequest = { onDismiss() },
+        title = { Text("音楽データを編集") },
+        text = {
+            Column {
+                OutlinedTextField(
+                    value = nameOfMusic,
+                    onValueChange = { nameOfMusic = it },
+                    label = { Text("曲名") }
+                )
+                OutlinedTextField(
+                    value = nameOfArtist,
+                    onValueChange = { nameOfArtist = it },
+                    label = { Text("作曲者名") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                )
+                OutlinedTextField(
+                    value = nameOfJenre,
+                    onValueChange = { nameOfJenre = it },
+                    label = { Text("ジャンル") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                )
+                OutlinedTextField(
+                    value = nameOfStyle,
+                    onValueChange = { nameOfStyle = it },
+                    label = { Text("演奏スタイル") }
+                )
+                OutlinedTextField(
+                    value = nameOfMemo,
+                    onValueChange = { nameOfMemo = it },
+                    label = { Text("メモ") }
+                )
+                OutlinedTextField(
+                    value = levelOfRightHand,
+                    onValueChange = { levelOfRightHand = it },
+                    label = { Text("右手の習熟度") }
+                )
+                OutlinedTextField(
+                    value = levelOfLeftHand,
+                    onValueChange = { levelOfLeftHand = it },
+                    label = { Text("左手の習熟度") }
+                )
+
+            }
+        },
+        confirmButton = {
+            Button (
+                onClick = {
+                    viewModel.updateMusicValues(
+                        musicInfo.copy(
+                            nameOfMusic = nameOfMusic,
+                            nameOfArtist = nameOfArtist,
+                            nameOfJenre = nameOfJenre,
+                            nameOfStyle = nameOfStyle,
+                            nameOfMemo = nameOfMemo,
+                            levelOfRightHand = levelOfRightHand.toInt(),
+                            levelOfLeftHand = levelOfLeftHand.toInt()
+                        )
+                    )
+                    onDismiss()
+                }
+            ) {
+                Text("保存")
+            }
+        },
+        dismissButton = {
+            Button(onClick = { onDismiss() }) {
+                Text("キャンセル")
+            }
+        }
+    )
+}
+
+@Composable
 private fun NoRecordImageView(modifier: Modifier = Modifier) {
     Image(
         painter = painterResource(id = R.drawable.music_note),
@@ -104,7 +322,6 @@ private fun NoRecordImageView(modifier: Modifier = Modifier) {
 }
 
 // 以下は「記録無し」のコード
-
 @Preview(showBackground = true)
 @Composable
 private fun NoRecordImageViewPreview() {
@@ -150,6 +367,17 @@ private fun NoRecordDescriptionTextPreview() {
 }
 
 // 以下は「記録あり」のコード
+@Composable
+private fun SearchScreen() {
+    var searchQuery by rememberSaveable { mutableStateOf("") }
+
+    Column(modifier = Modifier.padding(dimensionResource(id = R.dimen.space_16_dp))) {
+        SearchBar(
+            query = searchQuery,
+            onQueryChange = { searchQuery = it }
+        )
+    }
+}
 
 @Composable
 private fun SearchBar(
@@ -188,402 +416,3 @@ private fun SearchBar(
         )
     }
 }
-
-@Composable
-private fun SearchScreen() {
-    var searchQuery by rememberSaveable { mutableStateOf("") }
-
-    Column(modifier = Modifier.padding(dimensionResource(id = R.dimen.space_16_dp))) {
-        SearchBar(
-            query = searchQuery,
-            onQueryChange = { searchQuery = it }
-        )
-        // 検索結果を表示するためのUIをここに追加。
-    }
-}
-
-// REAL
-@Composable
-private fun MusicInfoLazyColumn(viewModel: MusicInfoViewModel) {
-    val items by viewModel.musicInfo.collectAsState()
-    val scope = rememberCoroutineScope()
-
-    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-        // リスト表示
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(items) { item ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                        .padding(16.dp)
-                ) {
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(item.nameOfMusic)
-                        Text(item.nameOfArtist)
-                        Text(item.nameOfJenre)
-                        Text(item.nameOfStyle)
-                        Text(item.nameOfMemo)
-                        Text(item.levelOfRightHand.toString())
-                        Text(item.levelOfLeftHand.toString())
-                    }
-                    // 削除ボタン
-                    IconButton(
-                        onClick = {
-                            scope.launch {
-//                                viewModel.deleteItem(item)
-                            }
-                        }
-                    ) {
-                        Icon(Icons.Default.Delete, contentDescription = "Delete Item")
-                    }
-                }
-            }
-        }
-    }
-}
-
-
-// FAKE
-
-//@Composable
-//private fun MusicInfoLazyColumn() {
-//    LazyColumn(modifier = Modifier.fillMaxWidth()) {
-//        items(4) { index ->
-//
-//            // 以下が完成のイメージのコード
-//            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
-//
-//            Row(
-//                modifier = Modifier
-//                    .fillMaxWidth(),
-//                verticalAlignment = Alignment.CenterVertically
-//            ) {
-//                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_24_dp)))
-//                SongNameTextView(songName = "")
-//                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
-//                SongNameUserEnteredTextView(songName = "")
-//            }
-//
-//            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
-//
-//            Row(
-//                modifier = Modifier
-//                    .fillMaxWidth(),
-//                verticalAlignment = Alignment.CenterVertically
-//            ) {
-//                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_24_dp)))
-//                ArtistNameTextView(artistName = "")
-//                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
-//                ArtistNameUserEnteredTextView(artistName = "")
-//            }
-//
-//            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
-//
-//            Row(
-//                modifier = Modifier
-//                    .fillMaxWidth(),
-//                verticalAlignment = Alignment.CenterVertically
-//            ) {
-//                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_24_dp)))
-//                GenreNameTextView(genreName = "")
-//                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
-//                GenreNameUserEnteredTextView(genreName = "")
-//            }
-//
-//            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
-//
-//            Row(
-//                modifier = Modifier
-//                    .fillMaxWidth(),
-//                verticalAlignment = Alignment.CenterVertically
-//            ) {
-//                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_24_dp)))
-//                StyleNameTextView(styleName = "")
-//                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
-//                StyleNameUserEnteredTextView(styleName = "")
-//            }
-//
-//            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
-//
-//            Row(
-//                modifier = Modifier
-//                    .fillMaxWidth(),
-//                verticalAlignment = Alignment.CenterVertically
-//            ) {
-//                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_24_dp)))
-//                MemoTextView(memoName = "")
-//                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
-//                MemoUserEnteredTextView(memoName = "")
-//            }
-//
-//            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
-//
-//            Row(
-//                modifier = Modifier
-//                    .fillMaxWidth(),
-//                verticalAlignment = Alignment.CenterVertically
-//            ) {
-//                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_24_dp)))
-//                RightHandTextView(rightHand = "")
-//                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
-//                RightHandUserEnteredTextView(rightHand = "")
-//            }
-//
-//            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
-//
-//            Row(
-//                modifier = Modifier
-//                    .fillMaxWidth(),
-//                verticalAlignment = Alignment.CenterVertically
-//            ) {
-//                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_24_dp)))
-//                LeftHandTextView(leftHand = "")
-//                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
-//                LeftHandUserEnteredTextView(leftHand = "")
-//            }
-//
-//            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
-//
-//            Divider(
-//                modifier = Modifier
-//                    .padding(16.dp)
-//                    .fillMaxWidth(),
-//                color = androidx.compose.ui.graphics.Color.LightGray,
-//                thickness = 1.dp,
-//            )
-//        }
-//    }
-//}
-//
-//@Preview(showBackground = true)
-//@Composable
-//private fun MusicInfoLazyColumnPreview() {
-//    ProPianoCoverBookTheme {
-//        MusicInfoLazyColumn()
-//    }
-//}
-//
-//@Composable
-//private fun SongNameTextView(songName: String, modifier: Modifier = Modifier) {
-//    Text(
-//        text = stringResource(id = R.string.music_name),
-//        modifier = modifier
-//    )
-//}
-//
-//@Preview(showBackground = true)
-//@Composable
-//private fun SongNameTextViewPreview() {
-//    ProPianoCoverBookTheme {
-//        SongNameTextView(stringResource(id = R.string.music_name))
-//    }
-//}
-//
-//@Composable
-//private fun SongNameUserEnteredTextView(songName: String, modifier: Modifier = Modifier) {
-//    Text(
-//        text = stringResource(id = R.string.placeholder_music),
-//        modifier = modifier
-//    )
-//}
-//
-//@Preview(showBackground = true)
-//@Composable
-//private fun SongNameUserEnteredTextViewPreview() {
-//    ProPianoCoverBookTheme {
-//        SongNameUserEnteredTextView(stringResource(id = R.string.placeholder_music))
-//    }
-//}
-//
-//@Composable
-//private fun ArtistNameTextView(artistName: String, modifier: Modifier = Modifier) {
-//    Text(
-//        text = stringResource(id = R.string.artist_name),
-//        modifier = modifier
-//    )
-//}
-//
-//@Preview(showBackground = true)
-//@Composable
-//private fun ArtistNameTextViewPreview() {
-//    ProPianoCoverBookTheme {
-//        ArtistNameTextView(stringResource(id = R.string.artist_name))
-//    }
-//}
-//
-//@Composable
-//private fun ArtistNameUserEnteredTextView(artistName: String, modifier: Modifier = Modifier) {
-//    Text(
-//        text = stringResource(id = R.string.placeholder_artist),
-//        modifier = modifier
-//    )
-//}
-//
-//@Preview(showBackground = true)
-//@Composable
-//private fun ArtistNameUserEnteredTextViewPreview() {
-//    ProPianoCoverBookTheme {
-//        ArtistNameUserEnteredTextView(stringResource(id = R.string.placeholder_artist))
-//    }
-//}
-//
-//@Composable
-//private fun GenreNameTextView(genreName: String, modifier: Modifier = Modifier) {
-//    Text(
-//        text = stringResource(id = R.string.genre_name),
-//        modifier = modifier
-//    )
-//}
-//
-//@Preview(showBackground = true)
-//@Composable
-//private fun GenreNameTextViewPreview() {
-//    ProPianoCoverBookTheme {
-//        GenreNameTextView(stringResource(id = R.string.genre_name))
-//    }
-//}
-//
-//@Composable
-//private fun GenreNameUserEnteredTextView(genreName: String, modifier: Modifier = Modifier) {
-//    Text(
-//        text = stringResource(id = R.string.genre_user_input),
-//        modifier = modifier
-//    )
-//}
-//
-//@Preview(showBackground = true)
-//@Composable
-//private fun GenreNameUserEnteredTextViewPreview() {
-//    ProPianoCoverBookTheme {
-//        GenreNameUserEnteredTextView(stringResource(id = R.string.genre_user_input))
-//    }
-//}
-//
-//@Composable
-//private fun StyleNameTextView(styleName: String, modifier: Modifier = Modifier) {
-//    Text(
-//        text = stringResource(id = R.string.style_name),
-//        modifier = modifier
-//    )
-//}
-//
-//@Preview(showBackground = true)
-//@Composable
-//private fun StyleNameTextViewPreview() {
-//    ProPianoCoverBookTheme {
-//        StyleNameTextView(stringResource(id = R.string.style_name))
-//    }
-//}
-//
-//@Composable
-//private fun StyleNameUserEnteredTextView(styleName: String, modifier: Modifier = Modifier) {
-//    Text(
-//        text = stringResource(id = R.string.style_user_input),
-//        modifier = modifier
-//    )
-//}
-//
-//@Preview(showBackground = true)
-//@Composable
-//private fun StyleNameUserEnteredTextViewPreview() {
-//    ProPianoCoverBookTheme {
-//        StyleNameUserEnteredTextView(stringResource(id = R.string.style_user_input))
-//    }
-//}
-//
-//@Composable
-//private fun MemoTextView(memoName: String, modifier: Modifier = Modifier) {
-//    Text(
-//        text = stringResource(id = R.string.memo_name),
-//        modifier = modifier
-//    )
-//}
-//
-//@Preview(showBackground = true)
-//@Composable
-//private fun MemoTextViewPreview() {
-//    ProPianoCoverBookTheme {
-//        MemoTextView(stringResource(id = R.string.memo_name))
-//    }
-//}
-//
-//@Composable
-//private fun MemoUserEnteredTextView(memoName: String, modifier: Modifier = Modifier) {
-//    Text(
-//        text = stringResource(id = R.string.placeholder_memo),
-//        modifier = modifier
-//    )
-//}
-//
-//@Preview(showBackground = true)
-//@Composable
-//private fun MemoUserEnteredTextViewPreview() {
-//    ProPianoCoverBookTheme {
-//        MemoUserEnteredTextView(stringResource(id = R.string.placeholder_memo))
-//    }
-//}
-//
-//@Composable
-//private fun RightHandTextView(rightHand: String, modifier: Modifier = Modifier) {
-//    Text(
-//        text = stringResource(id = R.string.right_hand),
-//        modifier = modifier
-//    )
-//}
-//
-//@Preview(showBackground = true)
-//@Composable
-//private fun RightHandTextViewPreview() {
-//    ProPianoCoverBookTheme {
-//        RightHandTextView(stringResource(id = R.string.right_hand))
-//    }
-//}
-//
-//@Composable
-//private fun RightHandUserEnteredTextView(rightHand: String, modifier: Modifier = Modifier) {
-//    Text(
-//        text = "100",
-//        modifier = modifier
-//    )
-//}
-//
-//@Preview(showBackground = true)
-//@Composable
-//private fun RightHandUserEnteredTextViewPreview() {
-//    ProPianoCoverBookTheme {
-//        RightHandUserEnteredTextView("100")
-//    }
-//}
-//
-//@Composable
-//private fun LeftHandTextView(leftHand: String, modifier: Modifier = Modifier) {
-//    Text(
-//        text = stringResource(id = R.string.left_hand),
-//        modifier = modifier
-//    )
-//}
-//
-//@Preview(showBackground = true)
-//@Composable
-//private fun LeftHandTextViewPreview() {
-//    ProPianoCoverBookTheme {
-//        LeftHandTextView(stringResource(id = R.string.left_hand))
-//    }
-//}
-//
-//@Composable
-//private fun LeftHandUserEnteredTextView(leftHand: String, modifier: Modifier = Modifier) {
-//    Text(
-//        text = "90",
-//        modifier = modifier
-//    )
-//}
-//
-//@Preview(showBackground = true)
-//@Composable
-//private fun LeftHandUserEnteredTextViewPreview() {
-//    ProPianoCoverBookTheme {
-//        LeftHandUserEnteredTextView("90")
-//    }
-//}

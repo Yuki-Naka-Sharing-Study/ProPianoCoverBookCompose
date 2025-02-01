@@ -20,7 +20,7 @@ abstract class MusicInfoDatabase : RoomDatabase() {
             return INSTANCE ?: synchronized(this) {
                 val instance = databaseBuilder(
                     context.applicationContext,
-                    MusicInfoDatabase::class.java, "music_info_database"
+                    MusicInfoDatabase::class.java, "music_info"
                 )
                     .fallbackToDestructiveMigration()
                     .build()
