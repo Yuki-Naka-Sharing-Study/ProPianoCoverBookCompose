@@ -52,7 +52,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.propianocoverbook.R
 import com.example.propianocoverbook.api.Artist
-import com.example.propianocoverbook.api.RetrofitInstance
 import com.example.propianocoverbook.api.SpotifyApiService
 import com.example.propianocoverbook.data.MusicInfoViewModel
 import kotlinx.coroutines.Dispatchers
