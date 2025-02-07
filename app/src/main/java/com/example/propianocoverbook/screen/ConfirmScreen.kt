@@ -10,6 +10,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,17 +19,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.Card
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Slider
+import androidx.compose.material.SliderDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
+import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
@@ -35,6 +40,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -55,7 +61,22 @@ import com.example.propianocoverbook.ui.theme.ProPianoCoverBookTheme
 
 @Composable
 fun ConfirmScreen(viewModel: MusicInfoViewModel) {
+    var searchQuery by rememberSaveable { mutableStateOf("") }
     val musicInfoList = viewModel.musicInfo.collectAsState().value
+
+    // 検索クエリに基づいてフィルタリング
+    val filteredList = if (searchQuery.isEmpty()) {
+        musicInfoList
+    } else {
+        musicInfoList.filter { musicInfo ->
+            listOf(
+                musicInfo.nameOfMusic,
+                musicInfo.nameOfArtist,
+                musicInfo.nameOfJenre,
+                musicInfo.nameOfStyle,
+            ).any { it.contains(searchQuery, ignoreCase = true) }
+        }
+    }
 
     if (musicInfoList.isEmpty()) {
         Box(
@@ -65,7 +86,7 @@ fun ConfirmScreen(viewModel: MusicInfoViewModel) {
             Text(
                 text = "まだデータが登録されていません。",
                 fontSize = 18.sp,
-                color = androidx.compose.ui.graphics.Color.Gray
+                color = Color.Gray
             )
         }
     } else {
@@ -73,7 +94,31 @@ fun ConfirmScreen(viewModel: MusicInfoViewModel) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
-            SearchScreen()
+            SearchScreen(
+                searchQuery, { searchQuery = it }
+            )
+
+            if (filteredList.isEmpty()) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "検索結果がありません。",
+                        fontSize = 18.sp,
+                        color = Color.Gray
+                    )
+                }
+            } else {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    items(items = filteredList ) { musicInfo ->
+                        MusicItem(musicInfo = musicInfo, viewModel)
+                    }
+                }
+            }
+
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
             ) {
@@ -119,8 +164,49 @@ private fun MusicItem(
                 Text(text = "ジャンル: ${musicInfo.nameOfJenre}")
                 Text(text = "演奏スタイル: ${musicInfo.nameOfStyle}")
                 Text(text = "メモ: ${musicInfo.nameOfMemo}")
-                Text(text = "右手の習熟度: ${musicInfo.levelOfRightHand}")
-                Text(text = "左手の習熟度: ${musicInfo.levelOfLeftHand}")
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text = "右手の習熟度: ${musicInfo.levelOfRightHand}")
+                    Spacer(modifier = Modifier.padding(start = 8.dp))
+                    Slider(
+                        modifier = Modifier
+                            .weight(4f),
+                        value = musicInfo.levelOfRightHand.toFloat(),
+                        onValueChange = {},
+                        enabled = false,
+                        valueRange = 0f..100f,
+                        steps = 0,
+                        colors = SliderDefaults.colors(
+                            disabledThumbColor = Color.Transparent,
+                            disabledActiveTrackColor = Color(0xff0000ff),
+                            disabledInactiveTrackColor = Color(0xff808080),
+                        ),
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                }
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text = "左手の習熟度: ${musicInfo.levelOfLeftHand}")
+                    Spacer(modifier = Modifier.padding(start = 8.dp))
+                    Slider(
+                        modifier = Modifier
+                            .weight(4f),
+                        value = musicInfo.levelOfLeftHand.toFloat(),
+                        onValueChange = {},
+                        enabled = false,
+                        valueRange = 0f..100f,
+                        steps = 0,
+                        colors = SliderDefaults.colors(
+                            disabledThumbColor = Color.Transparent,
+                            disabledActiveTrackColor = Color(0xff0000ff),
+                            disabledInactiveTrackColor = Color(0xff808080),
+                        ),
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                }
             }
             Menu(
                 modifier = Modifier.align(Alignment.CenterEnd),
@@ -131,7 +217,7 @@ private fun MusicItem(
         }
     }
     if (showEditDialog) {
-        EditToeicDialog(
+        EditMusicDialog(
             musicInfo = musicInfo,
             viewModel = viewModel,
             onDismiss = { showEditDialog = false }
@@ -224,7 +310,7 @@ private fun Menu(
 }
 
 @Composable
-private fun EditToeicDialog(
+private fun EditMusicDialog(
     musicInfo: MusicInfo,
     viewModel: MusicInfoViewModel,
     onDismiss: () -> Unit
@@ -236,6 +322,8 @@ private fun EditToeicDialog(
     var nameOfMemo by remember { mutableStateOf(musicInfo.nameOfMemo) }
     var levelOfRightHand by remember { mutableStateOf(musicInfo.levelOfRightHand.toString()) }
     var levelOfLeftHand by remember { mutableStateOf(musicInfo.levelOfLeftHand.toString()) }
+    var numOfRightHand by rememberSaveable { mutableFloatStateOf(levelOfRightHand.toFloat()) }
+    var numOfLeftHand by rememberSaveable { mutableFloatStateOf(levelOfLeftHand.toFloat()) }
 
     AlertDialog(
         onDismissRequest = { onDismiss() },
@@ -269,21 +357,46 @@ private fun EditToeicDialog(
                     onValueChange = { nameOfMemo = it },
                     label = { Text("メモ") }
                 )
-                OutlinedTextField(
-                    value = levelOfRightHand,
-                    onValueChange = { levelOfRightHand = it },
-                    label = { Text("右手の習熟度") }
-                )
-                OutlinedTextField(
-                    value = levelOfLeftHand,
-                    onValueChange = { levelOfLeftHand = it },
-                    label = { Text("左手の習熟度") }
-                )
-
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text = "右手の習熟度: ${numOfRightHand.toInt()}")
+                    Slider(
+                        modifier = Modifier,
+                        value = numOfRightHand,
+                        onValueChange = { numOfRightHand = it },
+                        enabled = true,
+                        valueRange = 0f..100f,
+                        steps = 0,
+                        colors = SliderDefaults.colors(
+                            activeTickColor = Color.Transparent,
+                            activeTrackColor = Color(0xff0000ff),
+                            inactiveTrackColor = Color(0xff808080),
+                        ),
+                    )
+                }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text = "左手の習熟度: ${numOfLeftHand.toInt()}")
+                    Slider(
+                        modifier = Modifier,
+                        value = numOfLeftHand,
+                        onValueChange = { numOfLeftHand = it },
+                        enabled = true,
+                        valueRange = 0f..100f,
+                        steps = 0,
+                        colors = SliderDefaults.colors(
+                            activeTickColor = Color.Transparent,
+                            activeTrackColor = Color(0xff0000ff),
+                            inactiveTrackColor = Color(0xff808080),
+                        ),
+                    )
+                }
             }
         },
         confirmButton = {
-            Button (
+            Button(
                 onClick = {
                     viewModel.updateMusicValues(
                         musicInfo.copy(
@@ -292,8 +405,8 @@ private fun EditToeicDialog(
                             nameOfJenre = nameOfJenre,
                             nameOfStyle = nameOfStyle,
                             nameOfMemo = nameOfMemo,
-                            levelOfRightHand = levelOfRightHand.toInt(),
-                            levelOfLeftHand = levelOfLeftHand.toInt()
+                            levelOfRightHand = numOfRightHand.toInt(),
+                            levelOfLeftHand = numOfLeftHand.toInt()
                         )
                     )
                     onDismiss()
@@ -332,7 +445,7 @@ private fun NoRecordImageViewPreview() {
 
 @Composable
 private fun NoRecordText(modifier: Modifier = Modifier) {
-    androidx.compose.material.Text(
+    Text(
         text = stringResource(id = R.string.no_record),
         fontWeight = FontWeight.Bold,
         fontSize = dimensionResource(
@@ -351,10 +464,10 @@ private fun NoRecordTextPreview() {
 
 @Composable
 private fun NoRecordDescriptionText(modifier: Modifier = Modifier) {
-    androidx.compose.material.Text(
+    Text(
         text = stringResource(id = R.string.no_record_description),
         fontWeight = FontWeight.Light,
-        color = androidx.compose.ui.graphics.Color.LightGray
+        color = Color.LightGray
     )
 }
 
@@ -368,14 +481,12 @@ private fun NoRecordDescriptionTextPreview() {
 
 // 以下は「記録あり」のコード
 @Composable
-private fun SearchScreen() {
-    var searchQuery by rememberSaveable { mutableStateOf("") }
-
+private fun SearchScreen(
+    query: String,
+    onQueryChange: (String) -> Unit
+) {
     Column(modifier = Modifier.padding(dimensionResource(id = R.dimen.space_16_dp))) {
-        SearchBar(
-            query = searchQuery,
-            onQueryChange = { searchQuery = it }
-        )
+        SearchBar(query = query, onQueryChange = onQueryChange)
     }
 }
 
@@ -387,7 +498,7 @@ private fun SearchBar(
     val modifier = Modifier
         .fillMaxWidth()
         .background(
-            androidx.compose.ui.graphics.Color.Gray.copy(alpha = 0.1f),
+            Color.Gray.copy(alpha = 0.1f),
             shape = RoundedCornerShape(
                 dimensionResource(
                     id = R.dimen.search_bar_background_rounded_corner_shape
@@ -397,12 +508,14 @@ private fun SearchBar(
         .padding(dimensionResource(id = R.dimen.space_8_dp))
 
     Box(modifier = modifier) {
-        androidx.compose.material.TextField(
+        TextField(
             value = query,
             onValueChange = onQueryChange,
-            placeholder = { androidx.compose.material.Text(
-                stringResource(id = R.string.search_by_name)
-            ) },
+            placeholder = {
+                Text(
+                    stringResource(id = R.string.search_by_text)
+                )
+            },
             leadingIcon = {
                 Icon(
                     Icons.Default.Search,

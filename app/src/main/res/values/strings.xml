@@ -32,7 +32,7 @@
     <!-- ConfirmFragment -->
     <string name="no_record">記録無し</string>
     <string name="no_record_description">まだ何も記録されていません。</string>
-    <string name="search_by_name">曲名・アーティスト名で検索</string>
+    <string name="search_by_text">曲名・アーティスト名で検索</string>
     <string name="content_description_search_icon">Search Icon</string>
 
     <!-- SettingFragment -->
