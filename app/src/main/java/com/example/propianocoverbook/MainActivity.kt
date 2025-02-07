@@ -27,6 +27,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
 import androidx.room.Room
+import com.example.propianocoverbook.api.RetrofitInstance
+import com.example.propianocoverbook.api.SpotifyApiService
 import com.example.propianocoverbook.data.MusicInfoDao
 import com.example.propianocoverbook.data.MusicInfoDatabase
 import com.example.propianocoverbook.data.MusicInfoRepository
@@ -41,6 +43,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var musicInfoDao: MusicInfoDao
     private lateinit var repository: MusicInfoRepository
     private val dataStore by preferencesDataStore(name = "musicDataScreen")
+    private lateinit var retrofitService: SpotifyApiService
     private val viewModel: MusicInfoViewModel by lazy {
     MusicInfoViewModelFactory(
         repository,
@@ -59,14 +62,16 @@ class MainActivity : ComponentActivity() {
         ).build()
         musicInfoDao = database.musicInfoDao()
         repository = MusicInfoRepository(musicInfoDao)
+        retrofitService = RetrofitInstance.api
+
         setContent {
-            MyApp(viewModel = viewModel)
+            MyApp(viewModel = viewModel, retrofitService = retrofitService)
         }
     }
 }
 
 @Composable
-fun MyApp(viewModel: MusicInfoViewModel) {
+fun MyApp(viewModel: MusicInfoViewModel, retrofitService: SpotifyApiService) {
     val navController = rememberNavController()
     val isFirstLaunchState = viewModel.isFirstLaunch.collectAsState(initial = null)
 
@@ -96,12 +101,8 @@ fun MyApp(viewModel: MusicInfoViewModel) {
             }
             // 以下、BottomNavigation
             composable("musicDataScreen") { ConfirmScreen(viewModel = viewModel) }
-            composable("musicRecordScreen") { RecordScreen(viewModel = viewModel) }
+            composable("musicRecordScreen") { RecordScreen(viewModel = viewModel, retrofitService = retrofitService) }
             composable("settingScreen") { SettingsScreen() }
-
-//             以下、設定画面からの画面遷移
-//            composable("about") { AboutThisAppScreen() }
-//            composable("contact") { ContactScreen() }
         }
     }
 }

@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
@@ -67,7 +69,7 @@ fun RecordScreen(viewModel: MusicInfoViewModel, retrofitService: SpotifyApiServi
         var textOfMemo by rememberSaveable { mutableStateOf("") }
         var numOfRightHand by rememberSaveable { mutableFloatStateOf(0F) }
         var numOfLeftHand by rememberSaveable { mutableFloatStateOf(0F) }
-        var searchResults by rememberSaveable { mutableStateOf("") }
+        var searchResults by rememberSaveable { mutableStateOf<List<String>>(emptyList()) }
         val scope = rememberCoroutineScope()
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_16_dp)))
@@ -91,9 +93,16 @@ fun RecordScreen(viewModel: MusicInfoViewModel, retrofitService: SpotifyApiServi
                     )
                     if (response.isSuccessful) {
                         val artists = response.body()?.artists?.items?.map { it.name } ?: emptyList()
-                        searchResults = artists.toString()
+                        searchResults = listOf(artists.toString())
                     }
                 }
+            }
+        }
+
+        // 検索結果リスト
+        LazyColumn {
+            items(searchResults) { result ->
+                Text(text = result)
             }
         }
 
