@@ -49,10 +49,11 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.propianocoverbook.R
+import com.example.propianocoverbook.api.SpotifyApiService
 import com.example.propianocoverbook.data.MusicInfoViewModel
 
 @Composable
-fun RecordScreen(viewModel: MusicInfoViewModel) {
+fun RecordScreen(viewModel: MusicInfoViewModel, retrofitService: SpotifyApiService) {
 //fun RecordScreen() {
     Column(
         modifier = Modifier.padding(dimensionResource(id = R.dimen.space_16_dp))
