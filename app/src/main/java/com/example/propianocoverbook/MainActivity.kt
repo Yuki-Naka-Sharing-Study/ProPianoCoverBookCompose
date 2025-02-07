@@ -101,7 +101,7 @@ fun MyApp(viewModel: MusicInfoViewModel, retrofitService: SpotifyApiService) {
             }
             // 以下、BottomNavigation
             composable("musicDataScreen") { ConfirmScreen(viewModel = viewModel) }
-            composable("musicRecordScreen") { RecordScreen(viewModel = viewModel, retrofitService = retrofitService) }
+            composable("musicRecordScreen") { RecordScreen(viewModel = viewModel, retrofitService = retrofitService, authToken = "") }
             composable("settingScreen") { SettingsScreen() }
         }
     }

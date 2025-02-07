@@ -11,7 +11,7 @@ interface SpotifyApiService {
     suspend fun searchMusic(
         @Query("q") query: String,
         @Query("type") type: String = "track,artist",
-        @Query("limit") limit: String = "",
+        @Query("limit") limit: String = "5",
         @Header("Authorization") authHeader: String
     ): Response<SpotifySearchResponse>
 }

@@ -1,6 +1,5 @@
 package com.example.propianocoverbook.screen
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
@@ -38,7 +37,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -53,12 +51,15 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.propianocoverbook.R
+import com.example.propianocoverbook.api.Artist
+import com.example.propianocoverbook.api.RetrofitInstance
 import com.example.propianocoverbook.api.SpotifyApiService
 import com.example.propianocoverbook.data.MusicInfoViewModel
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @Composable
-fun RecordScreen(viewModel: MusicInfoViewModel, retrofitService: SpotifyApiService) {
+fun RecordScreen(viewModel: MusicInfoViewModel, retrofitService: SpotifyApiService, authToken: String) {
 //fun RecordScreen() {
     Column(
         modifier = Modifier.padding(dimensionResource(id = R.dimen.space_16_dp))
@@ -70,7 +71,7 @@ fun RecordScreen(viewModel: MusicInfoViewModel, retrofitService: SpotifyApiServi
         var textOfMemo by rememberSaveable { mutableStateOf("") }
         var numOfRightHand by rememberSaveable { mutableFloatStateOf(0F) }
         var numOfLeftHand by rememberSaveable { mutableFloatStateOf(0F) }
-        var searchResults by rememberSaveable { mutableStateOf<List<String>>(emptyList()) }
+        var suggestedArtists by remember { mutableStateOf<List<Artist>>(emptyList()) }
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_16_dp)))
         MusicOutlinedTextField(
@@ -80,36 +81,6 @@ fun RecordScreen(viewModel: MusicInfoViewModel, retrofitService: SpotifyApiServi
             onValueChange = { textOfMusic = it }
         )
 
-        // 検索API呼び出し
-        LaunchedEffect(textOfArtist) {
-            if (textOfArtist.isNotEmpty()) {
-                val response = retrofitService.searchMusic(
-                    textOfArtist,
-                    "track,artist",
-                    "10",
-                    "Bearer your_actual_access_token"
-                )
-                if (response.isSuccessful) {
-                    val body = response.body()
-                    if (body != null) {
-                        val artists = body.artists.items.map { it.name }
-                        searchResults = artists
-                    } else {
-                        Log.e("API_ERROR", "Response body is null")
-                    }
-                } else {
-                    Log.e("API_ERROR", "API call failed: ${response.errorBody()?.string()}")
-                }
-            }
-        }
-
-        // 検索結果リスト
-        LazyColumn {
-            items(searchResults) { result ->
-                Text(text = result)
-            }
-        }
-
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
         MusicOutlinedTextField(
             label = stringResource(id = R.string.artist_name),
@@ -117,6 +88,29 @@ fun RecordScreen(viewModel: MusicInfoViewModel, retrofitService: SpotifyApiServi
             value = textOfArtist,
             onValueChange = { textOfArtist = it },
         )
+
+        // Fetch suggestions when textOfArtist changes
+        LaunchedEffect(textOfArtist) {
+            suggestedArtists = if (textOfArtist.isNotBlank()) {
+                fetchArtistSuggestions(
+                    textOfArtist,
+                    authToken,
+                    retrofitService
+                )
+            } else {
+                emptyList()
+            }
+        }
+
+        if (suggestedArtists.isNotEmpty()) {
+            LazyColumn(
+                modifier = Modifier.height(150.dp)
+            ) {
+                items(suggestedArtists) { artist ->
+                    Text(text = artist.name)
+                }
+            }
+        }
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
         Row {
@@ -255,6 +249,32 @@ private fun MusicOutlinedTextField(
                 unfocusedBorderColor = Color.Gray
             )
         )
+    }
+}
+
+// Modify fetchArtistSuggestions to accept retrofitService
+suspend fun fetchArtistSuggestions(query: String, authToken: String, retrofitService: SpotifyApiService): List<Artist> {
+    return withContext(Dispatchers.IO) {
+        try {
+            val response = retrofitService.searchMusic( // Use the passed retrofitService here
+                query = query,
+                type = "artist",
+                authHeader = "Bearer $authToken"
+            )
+
+            if (response.isSuccessful) {
+                val spotifySearchResponse = response.body()
+                spotifySearchResponse?.artists?.items ?: emptyList()
+            } else {
+                // Handle error (e.g., log, display error message)
+                println("Error fetching artist suggestions: ${response.errorBody()?.string()}")
+                emptyList()
+            }
+        } catch (e: Exception) {
+            // Handle network or other exceptions
+            println("Exception fetching artist suggestions: ${e.message}")
+            emptyList()
+        }
     }
 }
 
