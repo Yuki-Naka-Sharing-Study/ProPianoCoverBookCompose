@@ -30,6 +30,7 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -51,6 +52,7 @@ import androidx.compose.ui.unit.sp
 import com.example.propianocoverbook.R
 import com.example.propianocoverbook.api.SpotifyApiService
 import com.example.propianocoverbook.data.MusicInfoViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun RecordScreen(viewModel: MusicInfoViewModel, retrofitService: SpotifyApiService) {
@@ -75,6 +77,25 @@ fun RecordScreen(viewModel: MusicInfoViewModel, retrofitService: SpotifyApiServi
             value = textOfMusic,
             onValueChange = { textOfMusic = it }
         )
+
+        // 検索API呼び出し
+        LaunchedEffect(textOfMusic) {
+            if (textOfMusic.isNotEmpty()) {
+                scope.launch {
+                    // ここでAPIリクエストを呼び出し
+                    val response = retrofitService.searchMusic(
+                        textOfMusic,
+                        "track,artist",
+                        "10",
+                        "Bearer {your_access_token}"
+                    )
+                    if (response.isSuccessful) {
+                        val artists = response.body()?.artists?.items?.map { it.name } ?: emptyList()
+                        searchResults = artists.toString()
+                    }
+                }
+            }
+        }
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
         MusicOutlinedTextField(
