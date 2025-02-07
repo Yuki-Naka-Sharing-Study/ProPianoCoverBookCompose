@@ -1,5 +1,6 @@
 package com.example.propianocoverbook.screen
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
@@ -70,7 +71,6 @@ fun RecordScreen(viewModel: MusicInfoViewModel, retrofitService: SpotifyApiServi
         var numOfRightHand by rememberSaveable { mutableFloatStateOf(0F) }
         var numOfLeftHand by rememberSaveable { mutableFloatStateOf(0F) }
         var searchResults by rememberSaveable { mutableStateOf<List<String>>(emptyList()) }
-        val scope = rememberCoroutineScope()
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_16_dp)))
         MusicOutlinedTextField(
@@ -81,20 +81,24 @@ fun RecordScreen(viewModel: MusicInfoViewModel, retrofitService: SpotifyApiServi
         )
 
         // 検索API呼び出し
-        LaunchedEffect(textOfMusic) {
-            if (textOfMusic.isNotEmpty()) {
-                scope.launch {
-                    // ここでAPIリクエストを呼び出し
-                    val response = retrofitService.searchMusic(
-                        textOfMusic,
-                        "track,artist",
-                        "10",
-                        "Bearer {your_access_token}"
-                    )
-                    if (response.isSuccessful) {
-                        val artists = response.body()?.artists?.items?.map { it.name } ?: emptyList()
-                        searchResults = listOf(artists.toString())
+        LaunchedEffect(textOfArtist) {
+            if (textOfArtist.isNotEmpty()) {
+                val response = retrofitService.searchMusic(
+                    textOfArtist,
+                    "track,artist",
+                    "10",
+                    "Bearer your_actual_access_token"
+                )
+                if (response.isSuccessful) {
+                    val body = response.body()
+                    if (body != null) {
+                        val artists = body.artists.items.map { it.name }
+                        searchResults = artists
+                    } else {
+                        Log.e("API_ERROR", "Response body is null")
                     }
+                } else {
+                    Log.e("API_ERROR", "API call failed: ${response.errorBody()?.string()}")
                 }
             }
         }
@@ -111,7 +115,7 @@ fun RecordScreen(viewModel: MusicInfoViewModel, retrofitService: SpotifyApiServi
             label = stringResource(id = R.string.artist_name),
             placeholder = stringResource(id = R.string.placeholder_artist),
             value = textOfArtist,
-            onValueChange = { textOfArtist = it }
+            onValueChange = { textOfArtist = it },
         )
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
