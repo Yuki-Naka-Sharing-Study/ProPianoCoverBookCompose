@@ -35,7 +35,7 @@ import com.example.propianocoverbook.data.MusicInfoViewModelFactory
 import com.example.propianocoverbook.onboard.OnboardingScreen
 import com.example.propianocoverbook.screen.ConfirmScreen
 import com.example.propianocoverbook.screen.RecordScreen
-import com.example.propianocoverbook.screen.SettingScreen
+import com.example.propianocoverbook.screen.SettingsScreen
 
 class MainActivity : ComponentActivity() {
     private lateinit var musicInfoDao: MusicInfoDao
@@ -97,7 +97,7 @@ fun MyApp(viewModel: MusicInfoViewModel) {
             // 以下、BottomNavigation
             composable("musicDataScreen") { ConfirmScreen(viewModel = viewModel) }
             composable("musicRecordScreen") { RecordScreen(viewModel = viewModel) }
-            composable("settingScreen") { SettingScreen() }
+            composable("settingScreen") { SettingsScreen() }
 
 //             以下、設定画面からの画面遷移
 //            composable("about") { AboutThisAppScreen() }
