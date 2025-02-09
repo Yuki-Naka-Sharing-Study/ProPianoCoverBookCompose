@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -64,7 +65,6 @@ fun RecordScreen(viewModel: MusicInfoViewModel) {
         var numOfRightHand by rememberSaveable { mutableFloatStateOf(0F) }
         var numOfLeftHand by rememberSaveable { mutableFloatStateOf(0F) }
 
-        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_16_dp)))
         MusicOutlinedTextField(
             label = stringResource(id = R.string.music_name),
             placeholder = stringResource(id = R.string.placeholder_music),
@@ -81,27 +81,41 @@ fun RecordScreen(viewModel: MusicInfoViewModel) {
         )
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
-        Row {
-            Text(text = "ジャンル")
-            Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
-            DropdownMenuWithIcon(
-                items = listOf("クラシック", "ジャズ", "ポップス", "ロック", "その他"),
-                value = textOfGenre,
-                onValueChange = { textOfGenre = it }
-            )
 
-            Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_24_dp)))
-
-            Text(text = "演奏スタイル")
-            Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
-            DropdownMenuWithIcon(
-                items = listOf("独奏", "連弾", "伴奏", "弾き語り"),
-                value = textOfStyle,
-                onValueChange = { textOfStyle = it }
-            )
+        Row(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Row(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(end = dimensionResource(id = R.dimen.space_16_dp)),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(text = "ジャンル")
+                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
+                DropdownMenuWithIcon(
+                    modifier = Modifier.weight(1f),
+                    items = listOf("クラシック", "ジャズ", "ポップス", "ロック", "その他"),
+                    value = textOfGenre,
+                    onValueChange = { textOfGenre = it },
+                )
+            }
+            Row (
+                modifier = Modifier.weight(1f),
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Text(text = "演奏スタイル")
+                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
+                DropdownMenuWithIcon(
+                    modifier = Modifier.weight(1f),
+                    items = listOf("独奏", "連弾", "伴奏", "弾き語り"),
+                    value = textOfStyle,
+                    onValueChange = { textOfStyle = it }
+                )
+            }
         }
 
-        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_16_dp)))
         MusicOutlinedTextField(
             label = stringResource(id = R.string.memo_name),
             placeholder = stringResource(id = R.string.placeholder_memo),
@@ -109,7 +123,7 @@ fun RecordScreen(viewModel: MusicInfoViewModel) {
             onValueChange = { textOfMemo = it }
         )
 
-        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_16_dp)))
         ProgressSection(stringResource(id = R.string.right_hand))
         {
             CircularProgressWithSeekBar(
@@ -160,6 +174,7 @@ fun RecordScreen(viewModel: MusicInfoViewModel) {
                     enabled = isButtonEnabled
                 )
             }
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_16_dp)))
         }
     }
 }
@@ -196,7 +211,7 @@ private fun MusicOutlinedTextField(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = label)
+        Text(text = label, modifier = Modifier.weight(0.18f))
         Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.space_16_dp)))
         androidx.compose.material.OutlinedTextField(
             modifier = Modifier
@@ -222,6 +237,7 @@ private fun MusicOutlinedTextField(
 
 @Composable
 private fun DropdownMenuWithIcon(
+    modifier: Modifier,
     items: List<String>,
     value: String,
     onValueChange: (String) -> Unit
