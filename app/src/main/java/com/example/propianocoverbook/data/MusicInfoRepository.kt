@@ -1,6 +1,8 @@
 package com.example.propianocoverbook.data
 
-class MusicInfoRepository(private val musicInfoDao: MusicInfoDao) {
+import javax.inject.Inject
+
+class MusicInfoRepository @Inject constructor(private val musicInfoDao: MusicInfoDao) {
     suspend fun saveMusicInfo(
         textOfMusic: String,
         textOfArtist: String,

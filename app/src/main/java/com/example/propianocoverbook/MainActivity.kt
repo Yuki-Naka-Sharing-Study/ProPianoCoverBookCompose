@@ -3,6 +3,7 @@ package com.example.propianocoverbook
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -31,34 +32,21 @@ import com.example.propianocoverbook.data.MusicInfoDao
 import com.example.propianocoverbook.data.MusicInfoDatabase
 import com.example.propianocoverbook.data.MusicInfoRepository
 import com.example.propianocoverbook.data.MusicInfoViewModel
-import com.example.propianocoverbook.data.MusicInfoViewModelFactory
 import com.example.propianocoverbook.onboard.OnboardingScreen
 import com.example.propianocoverbook.screen.ConfirmScreen
 import com.example.propianocoverbook.screen.RecordScreen
 import com.example.propianocoverbook.screen.SettingsScreen
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private lateinit var musicInfoDao: MusicInfoDao
-    private lateinit var repository: MusicInfoRepository
-    private val dataStore by preferencesDataStore(name = "musicDataScreen")
-    private val viewModel: MusicInfoViewModel by lazy {
-    MusicInfoViewModelFactory(
-        repository,
-        musicInfoDao,
-        dataStore
-    ).create(MusicInfoViewModel::class.java)
-    }
+    private val viewModel: MusicInfoViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // ライトモードを強制的に設定
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        val database = Room.databaseBuilder(
-            application,
-            MusicInfoDatabase::class.java, "music_info_database"
-        ).build()
-        musicInfoDao = database.musicInfoDao()
-        repository = MusicInfoRepository(musicInfoDao)
+
         setContent {
             MyApp(viewModel = viewModel)
         }
