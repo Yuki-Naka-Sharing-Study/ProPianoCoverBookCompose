@@ -239,7 +239,7 @@ fun RecordScreen(
                         x = artistFieldOffset.value.x.dp,
                         y = (artistFieldOffset.value.y + artistFieldHeight).dp
                     )
-                    .background(Color.White)
+                    .background(Color.White.copy(alpha = 0.5f)) // 背景色を半透明の白に設定
                     .border(1.dp, Color.Gray)
             ) {
                 items(suggestedArtists) { artist ->
@@ -258,7 +258,6 @@ fun RecordScreen(
         }
     }
 }
-
 
 //@Preview
 //@Composable
