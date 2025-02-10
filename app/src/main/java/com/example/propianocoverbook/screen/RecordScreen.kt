@@ -106,7 +106,16 @@ fun RecordScreen(viewModel: MusicInfoViewModel, retrofitService: SpotifyApiServi
                 modifier = Modifier.height(150.dp)
             ) {
                 items(suggestedArtists) { artist ->
-                    Text(text = artist.name)
+                    Text(
+                        text = artist.name,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                textOfArtist = artist.name // タップしたアーティスト名を格納
+                                suggestedArtists = emptyList() // 選択後は候補を非表示にする
+                            }
+                            .padding(8.dp) // 余白を追加
+                    )
                 }
             }
         }
