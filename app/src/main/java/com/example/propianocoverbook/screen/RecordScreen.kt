@@ -45,6 +45,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -239,8 +240,9 @@ fun RecordScreen(
                         x = artistFieldOffset.value.x.dp,
                         y = (artistFieldOffset.value.y + artistFieldHeight).dp
                     )
+                    .clip(RoundedCornerShape(8.dp)) // 角丸を適用
                     .background(Color.White.copy(alpha = 0.5f)) // 背景色を半透明の白に設定
-                    .border(1.dp, Color.Gray)
+                    .border(1.dp, Color.Gray, RoundedCornerShape(8.dp)) // 角丸の枠線を適用
             ) {
                 items(suggestedArtists) { artist ->
                     Text(
