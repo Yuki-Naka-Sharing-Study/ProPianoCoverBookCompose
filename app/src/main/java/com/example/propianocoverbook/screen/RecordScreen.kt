@@ -241,7 +241,7 @@ fun RecordScreen(
                         y = (artistFieldOffset.value.y + artistFieldHeight).dp
                     )
                     .clip(RoundedCornerShape(8.dp)) // 角丸を適用
-                    .background(Color.White.copy(alpha = 0.5f)) // 背景色を半透明の白に設定
+                    .background(Color.White.copy(alpha = 0.9f)) // 背景色を半透明の白に設定
                     .border(1.dp, Color.Gray, RoundedCornerShape(8.dp)) // 角丸の枠線を適用
             ) {
                 items(suggestedArtists) { artist ->
