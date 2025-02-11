@@ -265,7 +265,7 @@ fun RecordScreen(
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(150.dp)
+                    .height(164.dp)
                     .align(Alignment.TopStart)
                     .offset(
                         x = musicFieldOffset.value.x.dp,
@@ -295,7 +295,7 @@ fun RecordScreen(
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(150.dp)
+                    .height(164.dp)
                     .align(Alignment.TopStart)
                     .offset(
                         x = artistFieldOffset.value.x.dp,
