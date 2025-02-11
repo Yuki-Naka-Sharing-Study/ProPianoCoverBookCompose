@@ -58,12 +58,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+
 import com.example.propianocoverbook.R
 import com.example.propianocoverbook.api.Artist
 import com.example.propianocoverbook.api.SpotifyApiService
 import com.example.propianocoverbook.data.MusicInfoViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 @Composable
 fun RecordScreen(
@@ -81,7 +82,6 @@ fun RecordScreen(
     var suggestedArtists by remember { mutableStateOf<List<Artist>>(emptyList()) }
     var isArtistsSuggestionVisible by remember { mutableStateOf(false) }
 
-
     // アーティスト名の入力フィールドの位置を取得するための参照
     val artistFieldOffset = remember { mutableStateOf(Offset.Zero) }
 
@@ -94,19 +94,6 @@ fun RecordScreen(
             artistFieldOffset.value = coordinates.positionInRoot()
             artistFieldHeight = coordinates.size.height
         }
-
-    // アーティスト名が変更されたときに候補を取得
-//    LaunchedEffect(textOfArtist) {
-//        suggestedArtists = if (textOfArtist.isNotBlank()) {
-//            fetchArtistSuggestions(
-//                textOfArtist,
-//                authToken,
-//                retrofitService
-//            )
-//        } else {
-//            emptyList()
-//        }
-//    }
 
     LaunchedEffect(isArtistsSuggestionVisible) {
         if (isArtistsSuggestionVisible && textOfArtist.isNotBlank()) {
@@ -149,8 +136,6 @@ fun RecordScreen(
 
             Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
 
-            // 他のUI要素（ジャンルや演奏スタイルの入力フィールドなど）
-            // ...
             Row(
                 modifier = Modifier.fillMaxWidth()
             ) {
