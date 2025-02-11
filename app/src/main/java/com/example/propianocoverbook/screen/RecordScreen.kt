@@ -153,9 +153,7 @@ fun RecordScreen(
                 label = stringResource(id = R.string.music_name),
                 placeholder = stringResource(id = R.string.placeholder_music),
                 value = textOfMusic,
-                onValueChange = {
-                    textOfMusic = it
-                    isMusicSuggestionVisible = true},
+                onValueChange = { textOfMusic = it },
                 modifier = musicFieldModifier
             )
 
