@@ -111,27 +111,35 @@ fun RecordScreen(
             artistFieldHeight = coordinates.size.height
         }
 
-    LaunchedEffect(isMusicSuggestionVisible) {
-        suggestedMusic = if (isMusicSuggestionVisible && textOfMusic.isNotBlank()) {
-            fetchMusicSuggestions(
+    // 入力値が変更されたときに候補を更新
+    LaunchedEffect(textOfMusic) {
+        // 入力された文字が空でない場合にAPIから候補を取得
+        if (textOfMusic.isNotBlank()) {
+            suggestedMusic = fetchMusicSuggestions(
                 textOfMusic,
                 authToken,
                 retrofitService
             )
+            isMusicSuggestionVisible = suggestedMusic.isNotEmpty()
         } else {
-            emptyList()
+            suggestedMusic = emptyList()
+            isMusicSuggestionVisible = false
         }
     }
 
-    LaunchedEffect(isArtistsSuggestionVisible) {
-        suggestedArtists = if (isArtistsSuggestionVisible && textOfArtist.isNotBlank()) {
-            fetchArtistSuggestions(
+    // 入力値が変更されたときに候補を更新
+    LaunchedEffect(textOfArtist) {
+        // 入力された文字が空でない場合にAPIから候補を取得
+        if (textOfArtist.isNotBlank()) {
+            suggestedArtists = fetchArtistSuggestions(
                 textOfArtist,
                 authToken,
                 retrofitService
             )
+            isArtistsSuggestionVisible = suggestedArtists.isNotEmpty()
         } else {
-            emptyList()
+            suggestedArtists = emptyList()
+            isArtistsSuggestionVisible = false
         }
     }
 
@@ -158,9 +166,7 @@ fun RecordScreen(
                 label = stringResource(id = R.string.artist_name),
                 placeholder = stringResource(id = R.string.placeholder_artist),
                 value = textOfArtist,
-                onValueChange = {
-                    textOfArtist = it
-                    isArtistsSuggestionVisible = true},
+                onValueChange = { textOfArtist = it },
                 modifier = artistFieldModifier
             )
 
@@ -261,7 +267,7 @@ fun RecordScreen(
         }
 
         // 曲の候補リストを表示
-        if (suggestedMusic.isNotEmpty()) {
+        if (isMusicSuggestionVisible && suggestedMusic.isNotEmpty()) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -281,7 +287,7 @@ fun RecordScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
-                                textOfMusic = music.name // タップした曲名を格納
+                                textOfMusic = music.name // タップしたアーティスト名を格納
                                 isMusicSuggestionVisible = false  // 選択後は候補を非表示にする
                             }
                             .padding(8.dp) // 余白を追加
@@ -291,7 +297,7 @@ fun RecordScreen(
         }
 
         // アーティストの候補リストを表示
-        if (suggestedArtists.isNotEmpty()) {
+        if (isArtistsSuggestionVisible && suggestedArtists.isNotEmpty()) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
