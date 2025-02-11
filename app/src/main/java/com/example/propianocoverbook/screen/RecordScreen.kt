@@ -79,6 +79,8 @@ fun RecordScreen(
     var numOfRightHand by rememberSaveable { mutableFloatStateOf(0F) }
     var numOfLeftHand by rememberSaveable { mutableFloatStateOf(0F) }
     var suggestedArtists by remember { mutableStateOf<List<Artist>>(emptyList()) }
+    var isArtistsSuggestionVisible by remember { mutableStateOf(false) }
+
 
     // アーティスト名の入力フィールドの位置を取得するための参照
     val artistFieldOffset = remember { mutableStateOf(Offset.Zero) }
@@ -94,15 +96,27 @@ fun RecordScreen(
         }
 
     // アーティスト名が変更されたときに候補を取得
-    LaunchedEffect(textOfArtist) {
-        suggestedArtists = if (textOfArtist.isNotBlank()) {
-            fetchArtistSuggestions(
+//    LaunchedEffect(textOfArtist) {
+//        suggestedArtists = if (textOfArtist.isNotBlank()) {
+//            fetchArtistSuggestions(
+//                textOfArtist,
+//                authToken,
+//                retrofitService
+//            )
+//        } else {
+//            emptyList()
+//        }
+//    }
+
+    LaunchedEffect(isArtistsSuggestionVisible) {
+        if (isArtistsSuggestionVisible && textOfArtist.isNotBlank()) {
+            suggestedArtists = fetchArtistSuggestions(
                 textOfArtist,
                 authToken,
                 retrofitService
             )
         } else {
-            emptyList()
+            suggestedArtists = emptyList()
         }
     }
 
@@ -127,7 +141,9 @@ fun RecordScreen(
                 label = stringResource(id = R.string.artist_name),
                 placeholder = stringResource(id = R.string.placeholder_artist),
                 value = textOfArtist,
-                onValueChange = { textOfArtist = it },
+                onValueChange = {
+                    textOfArtist = it
+                    isArtistsSuggestionVisible = true},
                 modifier = artistFieldModifier
             )
 
@@ -251,7 +267,7 @@ fun RecordScreen(
                             .fillMaxWidth()
                             .clickable {
                                 textOfArtist = artist.name // タップしたアーティスト名を格納
-                                suggestedArtists = emptyList() // 選択後は候補を非表示にする
+                                isArtistsSuggestionVisible = false  // 選択後は候補を非表示にする
                             }
                             .padding(8.dp) // 余白を追加
                     )
