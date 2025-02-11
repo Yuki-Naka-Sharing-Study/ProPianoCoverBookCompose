@@ -64,6 +64,7 @@ import kotlinx.coroutines.withContext
 import com.example.propianocoverbook.R
 import com.example.propianocoverbook.api.Artist
 import com.example.propianocoverbook.api.SpotifyApiService
+import com.example.propianocoverbook.api.Track
 import com.example.propianocoverbook.data.MusicInfoViewModel
 
 @Composable
@@ -79,14 +80,29 @@ fun RecordScreen(
     var textOfMemo by rememberSaveable { mutableStateOf("") }
     var numOfRightHand by rememberSaveable { mutableFloatStateOf(0F) }
     var numOfLeftHand by rememberSaveable { mutableFloatStateOf(0F) }
+    var suggestedMusic by remember { mutableStateOf<List<Track>>(emptyList()) }
     var suggestedArtists by remember { mutableStateOf<List<Artist>>(emptyList()) }
     var isArtistsSuggestionVisible by remember { mutableStateOf(false) }
+    var isMusicSuggestionVisible by remember { mutableStateOf(false) }
+
+    // 曲名の入力フィールドの位置を取得するための参照
+    val musicFieldOffset = remember { mutableStateOf(Offset.Zero) }
 
     // アーティスト名の入力フィールドの位置を取得するための参照
     val artistFieldOffset = remember { mutableStateOf(Offset.Zero) }
 
     // アーティスト名の入力フィールドの高さを取得するための変数
+    var musicFieldHeight by remember { mutableStateOf(60) }
+
+    // アーティスト名の入力フィールドの高さを取得するための変数
     var artistFieldHeight by remember { mutableStateOf(120) }
+
+    // 曲名の入力フィールドの位置を取得するModifier
+    val musicFieldModifier = Modifier
+        .onGloballyPositioned { coordinates ->
+            musicFieldOffset.value = coordinates.positionInRoot()
+            musicFieldHeight = coordinates.size.height
+        }
 
     // アーティスト名の入力フィールドの位置を取得するModifier
     val artistFieldModifier = Modifier
@@ -95,15 +111,27 @@ fun RecordScreen(
             artistFieldHeight = coordinates.size.height
         }
 
+    LaunchedEffect(isMusicSuggestionVisible) {
+        suggestedMusic = if (isMusicSuggestionVisible && textOfMusic.isNotBlank()) {
+            fetchMusicSuggestions(
+                textOfMusic,
+                authToken,
+                retrofitService
+            )
+        } else {
+            emptyList()
+        }
+    }
+
     LaunchedEffect(isArtistsSuggestionVisible) {
-        if (isArtistsSuggestionVisible && textOfArtist.isNotBlank()) {
-            suggestedArtists = fetchArtistSuggestions(
+        suggestedArtists = if (isArtistsSuggestionVisible && textOfArtist.isNotBlank()) {
+            fetchArtistSuggestions(
                 textOfArtist,
                 authToken,
                 retrofitService
             )
         } else {
-            suggestedArtists = emptyList()
+            emptyList()
         }
     }
 
@@ -117,8 +145,10 @@ fun RecordScreen(
                 label = stringResource(id = R.string.music_name),
                 placeholder = stringResource(id = R.string.placeholder_music),
                 value = textOfMusic,
-                onValueChange = { textOfMusic = it },
-                modifier = Modifier
+                onValueChange = {
+                    textOfMusic = it
+                    isMusicSuggestionVisible = true},
+                modifier = musicFieldModifier
             )
 
             Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_8_dp)))
@@ -230,6 +260,36 @@ fun RecordScreen(
             Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_16_dp)))
         }
 
+        // 曲の候補リストを表示
+        if (suggestedMusic.isNotEmpty()) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(150.dp)
+                    .align(Alignment.TopStart)
+                    .offset(
+                        x = artistFieldOffset.value.x.dp,
+                        y = (artistFieldOffset.value.y + artistFieldHeight).dp
+                    )
+                    .clip(RoundedCornerShape(8.dp)) // 角丸を適用
+                    .background(Color.White.copy(alpha = 0.9f)) // 背景色を半透明の白に設定
+                    .border(1.dp, Color.Gray, RoundedCornerShape(8.dp)) // 角丸の枠線を適用
+            ) {
+                items(suggestedMusic) { music ->
+                    Text(
+                        text = music.name,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                textOfMusic = music.name // タップした曲名を格納
+                                isMusicSuggestionVisible = false  // 選択後は候補を非表示にする
+                            }
+                            .padding(8.dp) // 余白を追加
+                    )
+                }
+            }
+        }
+
         // アーティストの候補リストを表示
         if (suggestedArtists.isNotEmpty()) {
             LazyColumn(
@@ -332,6 +392,35 @@ suspend fun fetchArtistSuggestions(query: String, authToken: String, retrofitSer
             if (response.isSuccessful) {
                 val spotifySearchResponse = response.body()
                 spotifySearchResponse?.artists?.items ?: emptyList()
+            } else {
+                // Handle error (e.g., log, display error message)
+                println("Error fetching artist suggestions: ${response.errorBody()?.string()}")
+                emptyList()
+            }
+        } catch (e: Exception) {
+            // Handle network or other exceptions
+            println("Exception fetching artist suggestions: ${e.message}")
+            emptyList()
+        }
+    }
+}
+
+suspend fun fetchMusicSuggestions(
+    query: String,
+    authToken: String,
+    retrofitService: SpotifyApiService
+): List<Track> {
+    return withContext(Dispatchers.IO) {
+        try {
+            val response = retrofitService.searchMusic( // Use the passed retrofitService here
+                query = query,
+                type = "track",
+                authHeader = "Bearer $authToken"
+            )
+
+            if (response.isSuccessful) {
+                val spotifySearchResponse = response.body()
+                spotifySearchResponse?.tracks?.items ?: emptyList()
             } else {
                 // Handle error (e.g., log, display error message)
                 println("Error fetching artist suggestions: ${response.errorBody()?.string()}")
