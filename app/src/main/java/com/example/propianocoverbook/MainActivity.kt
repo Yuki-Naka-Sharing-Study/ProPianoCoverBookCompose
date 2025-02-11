@@ -1,5 +1,6 @@
 package com.example.propianocoverbook
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -54,6 +55,10 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // 画面の回転を無効にする
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
         // ライトモードを強制的に設定
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         val database = Room.databaseBuilder(
