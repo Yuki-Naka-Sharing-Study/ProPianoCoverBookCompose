@@ -268,8 +268,8 @@ fun RecordScreen(
                     .height(150.dp)
                     .align(Alignment.TopStart)
                     .offset(
-                        x = artistFieldOffset.value.x.dp,
-                        y = (artistFieldOffset.value.y + artistFieldHeight).dp
+                        x = musicFieldOffset.value.x.dp,
+                        y = (musicFieldOffset.value.y + musicFieldHeight).dp
                     )
                     .clip(RoundedCornerShape(8.dp)) // 角丸を適用
                     .background(Color.White.copy(alpha = 0.9f)) // 背景色を半透明の白に設定
