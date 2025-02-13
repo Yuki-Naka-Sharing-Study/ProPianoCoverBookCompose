@@ -111,10 +111,10 @@ fun RecordScreen(
             artistFieldHeight = coordinates.size.height
         }
 
-    // 入力値が変更されたときに候補を更新
+    // textOfMusic が曲名候補に含まれていない場合のみAPIを呼ぶ
     LaunchedEffect(textOfMusic) {
-        // 入力された文字が空でない場合にAPIから候補を取得
-        if (textOfMusic.isNotBlank()) {
+        val isMusicInSuggestions = suggestedMusic.any { it.name == textOfMusic }
+        if (textOfMusic.isNotBlank()  && !isMusicInSuggestions) {
             suggestedMusic = fetchMusicSuggestions(
                 textOfMusic,
                 authToken,
@@ -127,10 +127,10 @@ fun RecordScreen(
         }
     }
 
-    // 入力値が変更されたときに候補を更新
+    // textOfArtist がアーティスト候補に含まれていない場合のみAPIを呼ぶ
     LaunchedEffect(textOfArtist) {
-        // 入力された文字が空でない場合にAPIから候補を取得
-        if (textOfArtist.isNotBlank()) {
+        val isArtistInSuggestions = suggestedArtists.any { it.name == textOfArtist }
+        if (textOfArtist.isNotBlank() && !isArtistInSuggestions) {
             suggestedArtists = fetchArtistSuggestions(
                 textOfArtist,
                 authToken,
