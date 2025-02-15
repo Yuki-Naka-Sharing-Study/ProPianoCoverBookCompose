@@ -80,4 +80,10 @@ class MusicInfoViewModel(
             this@MusicInfoViewModel._musicInfo.value = musicInfoDao.getAllMusicInfo()
         }
     }
+    // suspend 関数を定義
+    suspend fun getPlayableMusicCount(): Int {
+        // 右手と左手の習熟度が100の曲をフィルタリング
+        return musicInfoDao.getAllMusicInfo()
+            .count { it.levelOfRightHand == 100 && it.levelOfLeftHand == 100 }
+    }
 }

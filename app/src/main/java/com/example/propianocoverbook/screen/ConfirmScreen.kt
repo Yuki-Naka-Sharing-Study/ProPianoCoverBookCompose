@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -36,6 +37,7 @@ import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.dp
@@ -63,6 +65,12 @@ import com.example.propianocoverbook.ui.theme.ProPianoCoverBookTheme
 fun ConfirmScreen(viewModel: MusicInfoViewModel) {
     var searchQuery by rememberSaveable { mutableStateOf("") }
     val musicInfoList = viewModel.musicInfo.collectAsState().value
+    // 非同期でデータを取得
+    val playableMusicCount = remember { mutableStateOf(0) }
+
+    LaunchedEffect(Unit) {
+        playableMusicCount.value = viewModel.getPlayableMusicCount()
+    }
 
     // 検索クエリに基づいてフィルタリング
     val filteredList = if (searchQuery.isEmpty()) {
@@ -103,7 +111,23 @@ fun ConfirmScreen(viewModel: MusicInfoViewModel) {
                 Text("合計曲数：")
                 Spacer(modifier = Modifier.padding(end = dimensionResource(id = R.dimen.space_8_dp)))
                 Text("${musicInfoList.size}")
-                Spacer(modifier = Modifier.padding(end = dimensionResource(id = R.dimen.space_16_dp)))
+                Spacer(modifier = Modifier.padding(end = dimensionResource(id = R.dimen.space_24_dp)))
+            }
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.space_16_dp)))
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Spacer(modifier = Modifier.padding(start = dimensionResource(id = R.dimen.space_16_dp)))
+                Text("練習中の合計曲数：")
+                Spacer(modifier = Modifier.padding(end = dimensionResource(id = R.dimen.space_8_dp)))
+                val practicingMusicList: Int = musicInfoList.size - playableMusicCount.value
+                Text(practicingMusicList.toString())
+                Spacer(modifier = Modifier.padding(end = dimensionResource(id = R.dimen.space_32_dp)))
+
+                Text("完璧に弾ける合計曲数：")
+                Spacer(modifier = Modifier.padding(end = dimensionResource(id = R.dimen.space_8_dp)))
+                Text("${playableMusicCount.value}")
             }
 
             SearchScreen(
