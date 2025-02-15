@@ -91,9 +91,21 @@ fun ConfirmScreen(viewModel: MusicInfoViewModel) {
         }
     } else {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Top
         ) {
+            Spacer(modifier = Modifier.padding(top = dimensionResource(id = R.dimen.space_16_dp)))
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ){
+                Spacer(modifier = Modifier.padding(start = dimensionResource(id = R.dimen.space_16_dp)))
+                Text("合計曲数：")
+                Spacer(modifier = Modifier.padding(end = dimensionResource(id = R.dimen.space_8_dp)))
+                Text("${musicInfoList.size}")
+                Spacer(modifier = Modifier.padding(end = dimensionResource(id = R.dimen.space_16_dp)))
+            }
+
             SearchScreen(
                 searchQuery, { searchQuery = it }
             )
